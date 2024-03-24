@@ -16,12 +16,12 @@ class SignupScreen extends StatelessWidget {
             onTap: (){
               Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back_ios,
               color: Colors.white,
             ),
         ),
-        title: Text("Sign Up",
+        title: const Text("Sign Up",
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,

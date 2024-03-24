@@ -9,7 +9,7 @@ class ScheduleScreen extends StatelessWidget {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: Colors.cyan[700],
-        title: Text("Schedule",
+        title: const Text("Schedule",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -23,7 +23,14 @@ class ScheduleScreen extends StatelessWidget {
           child: Column(
             children: [
               Center(
-                child: Text("History"),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        const Text("History"),
+                      ],
+                    )
+                ),
               )
             ],
           ),

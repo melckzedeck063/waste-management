@@ -108,7 +108,7 @@ class HomeScreen extends StatefulWidget {
                                     const SizedBox(height: 7),
                                     Text("Request for waste collection",
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 16,
                                           color: Colors.grey[700]
                                       ),
                                     )
