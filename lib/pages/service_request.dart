@@ -187,7 +187,7 @@ class _ServiceRequestState extends State<ServiceRequest> {
       ),
       
       bottomNavigationBar: Container(
-        height: 500,
+        height: 485,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: const BoxDecoration(
           color: Colors.white,

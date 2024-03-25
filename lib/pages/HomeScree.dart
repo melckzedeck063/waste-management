@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:manage_waste/pages/notifications.dart';
 import 'package:manage_waste/utils/service_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,7 +26,73 @@ class HomeScreen extends StatefulWidget {
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.cyan[700],
-        automaticallyImplyLeading: false,
+          iconTheme: const IconThemeData(color: Colors.white)
+      ),
+      drawer: Drawer(
+        backgroundColor: Colors.cyan[700],
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+                child: Container(
+                  height: 70,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50)
+                  ),
+
+                  child: Column(
+                    children: [
+                      Icon(Icons.person_2_rounded, size: 64, color: Colors.cyan[100],),
+                      Text("Neema Hammedan",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[100]
+                        ),
+                      )
+                    ],
+                  ),
+                )
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.shopping_cart,  color: Colors.white,),
+              title: const Text("My Requests",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: Colors.white
+              ),
+              ),
+              onTap: (){},
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings,  color: Colors.white,),
+              title: const Text("Settings",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.white
+                ),
+              ),
+              onTap: (){},
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.info,  color: Colors.white,),
+              title: const Text("About",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.white
+                ),
+              ),
+              onTap: (){},
+            )
+
+          ],
+        ),
       ),
       body: Center(
         child: Column(
@@ -63,18 +130,26 @@ class HomeScreen extends StatefulWidget {
                         ],
                       ),
 
-                      Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            color: Colors.cyan[200],
-                            borderRadius: BorderRadius.circular(30)
-                        ),
-
-                        child: const Icon(
-                          Icons.notifications,
-                          size: 30,
-                          color: Colors.white,
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(
+                              context, 
+                            MaterialPageRoute(builder: (context) => NotificationScreen())
+                          );
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.cyan[200],
+                              borderRadius: BorderRadius.circular(30)
+                          ),
+                        
+                          child: const Icon(
+                            Icons.notifications,
+                            size: 30,
+                            color: Colors.white,
+                          ),
                         ),
                       )
                     ],
@@ -170,7 +245,7 @@ class HomeScreen extends StatefulWidget {
 
 
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 1),
+                          padding: const EdgeInsets.symmetric(horizontal: 1),
                           height: 375,
                           child: ListView.builder(
                         itemCount: (services.length / 2).ceil(),
