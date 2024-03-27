@@ -40,7 +40,6 @@ class NotificationScreen extends StatelessWidget {
               color: Colors.white
           ),
         ),
-        automaticallyImplyLeading: false,
       ),
       body: ListView.builder(
         itemCount: notifications.length,

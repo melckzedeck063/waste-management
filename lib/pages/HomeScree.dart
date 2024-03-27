@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:manage_waste/pages/my_requests.dart';
 import 'package:manage_waste/pages/notifications.dart';
 import 'package:manage_waste/utils/service_card.dart';
 
@@ -65,7 +66,9 @@ class HomeScreen extends StatefulWidget {
                 color: Colors.white
               ),
               ),
-              onTap: (){},
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyRequests()));
+              },
             ),
             ListTile(
               leading: const Icon(Icons.settings,  color: Colors.white,),
@@ -82,6 +85,18 @@ class HomeScreen extends StatefulWidget {
             ListTile(
               leading: const Icon(Icons.info,  color: Colors.white,),
               title: const Text("About",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.white
+                ),
+              ),
+              onTap: (){},
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.logout,  color: Colors.white,),
+              title: const Text("Log Out",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
@@ -217,17 +232,14 @@ class HomeScreen extends StatefulWidget {
             ),
 
             const  SizedBox(height: 18,),
-            Column(
-                children:[
+
                   Container(
                   padding: const EdgeInsets.symmetric(horizontal: 7),
                   decoration: const BoxDecoration(
                     // color: Colors.white,
                     borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20))
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                  child:
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -240,38 +252,37 @@ class HomeScreen extends StatefulWidget {
                           )
                         ],
                       ),
-
+                  ),
                       const SizedBox(height: 13),
 
 
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 1),
-                          height: 375,
+                        Expanded(
                           child: ListView.builder(
                         itemCount: (services.length / 2).ceil(),
                           itemBuilder: (context, index){
                           final int firstColumn= index * 2;
                           final int secondColumn =  firstColumn + 1;
 
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                            children: [
-                              if(firstColumn < services.length)
-                                ServiceCard(name: services[firstColumn]["name"], image: services[firstColumn]["image"],),
+                              children: [
+                                if(firstColumn < services.length)
+                                  ServiceCard(name: services[firstColumn]["name"], image: services[firstColumn]["image"],),
 
-                              if(secondColumn < services.length)
-                                ServiceCard(name: services[secondColumn]["name"], image: services[secondColumn]["image"],),
-                            ],
+                                if(secondColumn < services.length)
+                                  ServiceCard(name: services[secondColumn]["name"], image: services[secondColumn]["image"],),
+                              ],
+                            ),
                           );
                           }
                       ),
-                        )
-                    ],
-                  ),
-                ),
-    ]
-            ),
+                        ),
+
+            const  SizedBox(height: 8,)
+
 
           ],
         ),
