@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manage_waste/pages/HomeScree.dart';
 import 'package:manage_waste/pages/history_screen.dart';
+import 'package:manage_waste/pages/pricing_page.dart';
 import 'package:manage_waste/pages/schedule_screen.dart';
 import 'package:manage_waste/pages/updates_page.dart';
 
@@ -20,7 +21,7 @@ class _LandingScreenState extends State<LandingScreen> {
     const HomeScreen(),
     const UpdatesScreen(),
     const HistoryScreen(),
-    const  ScheduleScreen()
+    const  PricingPages()
   ];
 
   void changeScreen(int index){

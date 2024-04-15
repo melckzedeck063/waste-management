@@ -30,6 +30,7 @@ class ScheduleCard extends StatelessWidget {
           ),
           ),
           const SizedBox(height: 8,),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
