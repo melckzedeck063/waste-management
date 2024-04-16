@@ -3,6 +3,7 @@ import 'package:manage_waste/pages/landing_screen.dart';
 import 'package:manage_waste/pages/signup_page.dart';
 import 'package:manage_waste/provider/authentication_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -139,8 +140,50 @@ class _LoginScreenState extends State<LoginScreen> {
                             if(_formKey.currentState != null && _formKey.currentState!.validate()) {
                               String username = emailController.text.trim();
                               String password =  passwordController.text.trim();
+
+                              print(username+ " "+  password);
             
                               auth.loginUser(username: username, password: password, context: context);
+
+                              if(auth.requestSuccessful == true){
+                                toastification.show(
+                                    context: context,
+                                    style: ToastificationStyle.fillColored,
+                                    type: ToastificationType.success,
+                                    description: RichText(text:  TextSpan(text: auth.resMessage)),
+                                    alignment: Alignment.topRight,
+                                    autoCloseDuration: const Duration(seconds: 4),
+                                    icon: const Icon(Icons.check_circle),
+                                    primaryColor: Colors.green[700],
+                                    backgroundColor: Colors.white
+                                );
+
+                                Future.delayed(
+                                    const Duration(seconds: 5), () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const LandingScreen())
+                                  );
+                                }
+                                );
+                              }else {
+                                toastification.show(
+                                    context: context,
+                                    style: ToastificationStyle.fillColored,
+                                    type: ToastificationType.error,
+                                    description: RichText(text:  TextSpan(text: auth.resMessage)),
+                                    alignment: Alignment.topRight,
+                                    autoCloseDuration: const Duration(seconds: 4),
+                                    icon: const Icon(Icons.check_circle),
+                                    primaryColor: Colors.green[700],
+                                    backgroundColor: Colors.white
+                                );
+
+                              }
+                            }
+                            else {
+                              print("Form is not okay");
                             }
             
                           },

@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:manage_waste/config/URLS.dart';
 import 'package:http/http.dart' as http;
 import 'package:manage_waste/pages/login_screen.dart';
+import 'package:manage_waste/provider/user_details_provider.dart';
 
 import '../pages/landing_screen.dart';
 
 
 class AuthenticationProvider extends ChangeNotifier {
-  final RequestUrl = AppUrls.AuthUrl;
+  final RequestUrl = AppUrls.TEST_URL;
 
   bool _isLoading = false;
   bool _requestSuccessful = false;
@@ -32,20 +33,22 @@ class AuthenticationProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    String url =  "$RequestUrl/register";
+    String url =  "$RequestUrl/management/account/create-user";
 
     final body = {
       "firstName" : firstName,
       "lastName" : lastName,
       "email" : email,
       "phoneNumber" : telephone,
-      "password" : password
+      "password" : password,
+      "userRole" : "USER"
     };
 
     final Map<String,String> headers = {
       "Content-Type":"application/json"
     };
 
+    print(body);
     try {
       http.Response response  = await  http.post(Uri.parse(url), headers: headers, body: json.encode(body));
 
@@ -62,6 +65,12 @@ class AuthenticationProvider extends ChangeNotifier {
             MaterialPageRoute(builder: (context) => const LoginScreen())
         );
 
+      }
+      else {
+        final res = json.decode(response.body);
+        print(res);
+        _isLoading = false;
+        notifyListeners();
       }
 
     } on SocketException catch(e) {
@@ -91,19 +100,20 @@ class AuthenticationProvider extends ChangeNotifier {
     required BuildContext context,
 }) async {
 
-    final url = "$RequestUrl/login";
+    final url = "$RequestUrl/auth/login";
 
     _isLoading  = true;
     notifyListeners();
 
     Map<String,String> body  = {
-      "username" : username,
+      "email" : username,
       "password" : password
     };
 
     final Map<String, String> headers = {
       "Content-Type" : "application/json"
     };
+
 
     try {
        http.Response response  =  await http.post(Uri.parse(url), headers: headers, body: json.encode(body));
@@ -113,12 +123,27 @@ class AuthenticationProvider extends ChangeNotifier {
          _requestSuccessful = true;
          _resMessage = "Login Successful";
 
-         print(response.body);
+         final resp = json.decode(response.body);
 
-         Navigator.push(
-             context,
-             MaterialPageRoute(builder: (context) => const LandingScreen())
-         );
+         // print(resp["token"]);
+
+         String token = resp["token"];
+         String username = resp["username"];
+         String user_role = "";
+         String firstname = resp["fullName"];
+
+         // print(token + " " + firstname);
+
+         CurrentUserProvider().saveToken(token);
+         CurrentUserProvider().saveUsername(username);
+         CurrentUserProvider().saveFirstname(firstname);
+
+       }
+       else {
+         final res = json.decode(response.body);
+         print(res);
+         _isLoading = false;
+         notifyListeners();
        }
 
     }on SocketException catch(e) {
