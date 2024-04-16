@@ -11,7 +11,7 @@ import '../pages/landing_screen.dart';
 
 
 class AuthenticationProvider extends ChangeNotifier {
-  final RequestUrl = AppUrls.TEST_URL;
+  final RequestUrl = AppUrls.AuthUrl;
 
   bool _isLoading = false;
   bool _requestSuccessful = false;
@@ -25,7 +25,7 @@ class AuthenticationProvider extends ChangeNotifier {
   void registerUser ({
     required String firstName,
     required String lastName,
-    required String email,
+    required String username,
     required String telephone,
     required String password,
     required BuildContext context
@@ -33,12 +33,12 @@ class AuthenticationProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    String url =  "$RequestUrl/management/account/create-user";
+    String url =  "$RequestUrl/register";
 
     final body = {
       "firstName" : firstName,
       "lastName" : lastName,
-      "email" : email,
+      "username" : username,
       "phoneNumber" : telephone,
       "password" : password,
       "userRole" : "USER"
@@ -60,10 +60,10 @@ class AuthenticationProvider extends ChangeNotifier {
         _requestSuccessful =  true;
         notifyListeners();
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginScreen())
-        );
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => const LoginScreen())
+        // );
 
       }
       else {
@@ -100,13 +100,13 @@ class AuthenticationProvider extends ChangeNotifier {
     required BuildContext context,
 }) async {
 
-    final url = "$RequestUrl/auth/login";
+    final url = "$RequestUrl/login";
 
     _isLoading  = true;
     notifyListeners();
 
     Map<String,String> body  = {
-      "email" : username,
+      "username" : username,
       "password" : password
     };
 
@@ -125,7 +125,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
          final resp = json.decode(response.body);
 
-         // print(resp["token"]);
+         print(resp);
 
          String token = resp["token"];
          String username = resp["username"];

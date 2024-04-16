@@ -288,7 +288,7 @@ class SignUpScreenState extends State<SignupScreen> {
                                   String password =  passwordController.text.trim();
                                   String confirmPassword = confirmPasswordController.text.trim();
 
-                                  auth.registerUser(firstName: firstName, lastName: lastName, email: email, telephone: phoneNumber, password: password, context: context);
+                                  auth.registerUser(firstName: firstName, lastName: lastName, username: email, telephone: phoneNumber, password: password, context: context);
                                 }
 
 

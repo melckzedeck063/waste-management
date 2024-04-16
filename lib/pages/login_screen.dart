@@ -172,11 +172,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     context: context,
                                     style: ToastificationStyle.fillColored,
                                     type: ToastificationType.error,
-                                    description: RichText(text:  TextSpan(text: auth.resMessage)),
+                                    description: RichText(text:  const TextSpan(text: "Login failed please try  again!")),
                                     alignment: Alignment.topRight,
                                     autoCloseDuration: const Duration(seconds: 4),
                                     icon: const Icon(Icons.check_circle),
-                                    primaryColor: Colors.green[700],
+                                    primaryColor: Colors.red[500],
                                     backgroundColor: Colors.white
                                 );
 
