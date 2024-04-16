@@ -64,7 +64,15 @@ class PricingCard extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const PaymentPage())
+                          MaterialPageRoute(builder: (context) =>  PaymentPage(
+                            arguments: PaymentArguments(
+                              packageName: package,
+                              weeklyCost : weekly,
+                              monthlyCost :  monthly,
+                              annualCost :  annually,
+                              services: services
+                            )
+                          ))
                       );
                     },
 

@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:manage_waste/pages/splash_screen.dart';
+import 'package:manage_waste/provider/authentication_provider.dart';
+import 'package:provider/provider.dart';
 
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    ChangeNotifierProvider(
+      create : (context) => AuthenticationProvider(),
+      child : const MyApp()
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,9 +20,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+    return  MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
+        ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+      ),
     );
   }
 }

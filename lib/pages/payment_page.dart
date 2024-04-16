@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:manage_waste/pages/payment_procedures.dart';
 
 class PaymentPage extends StatefulWidget {
-  const PaymentPage({super.key});
+
+  final PaymentArguments arguments;
+  const PaymentPage({Key? key, required this.arguments}) : super(key: key);
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -47,8 +50,8 @@ class _PaymentPageState extends State<PaymentPage> {
                   child: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.symmetric(vertical: 25) ,
-                        child: Text("Basic",
+                        margin: const EdgeInsets.symmetric(vertical: 25) ,
+                        child: Text(widget.arguments.packageName ,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24,
@@ -62,14 +65,14 @@ class _PaymentPageState extends State<PaymentPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 10),
+                            margin: const EdgeInsets.symmetric(vertical: 10),
                             child: Column(
                               children: [
                                 Row(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(right: 4,top: 2),
+                                      margin: const EdgeInsets.only(right: 4,top: 2),
                                       child: Text("Tsh",
                                         style: TextStyle(
                                             fontSize: 14,
@@ -78,7 +81,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                       ),
                                     ),
 
-                                    Text("80000",
+                                    Text(widget.arguments.weeklyCost,
                                       style: TextStyle(
                                           fontSize: 22,
                                           fontWeight: FontWeight.bold,
@@ -106,7 +109,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(right: 4,top: 2),
+                                    margin: const EdgeInsets.only(right: 4,top: 2),
                                     child: Text("Tsh",
                                       style: TextStyle(
                                           fontSize: 14,
@@ -115,7 +118,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                     ),
                                   ),
 
-                                  Text("17000",
+                                  Text(widget.arguments.monthlyCost,
                                     style: TextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold,
@@ -142,7 +145,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(right: 4,top: 2),
+                                    margin: const EdgeInsets.only(right: 4,top: 2),
                                     child: Text("Tsh",
                                       style: TextStyle(
                                           fontSize: 14,
@@ -151,7 +154,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                     ),
                                   ),
 
-                                  Text("49000",
+                                  Text(widget.arguments.annualCost,
                                     style: TextStyle(
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold,
@@ -176,126 +179,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
 
                       const  SizedBox(height: 20,),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 14),
-                              child: Row(
-                                children: [
-                                  Container(
-                                      margin : const EdgeInsets.only(right: 14,),
-                                      child: Icon(Icons.done, size: 24, color: Colors.green[600],)
-                                  ),
-
-                                  const Text("1 Site visit per week",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 14),
-                              child: Row(
-                                children: [
-                                  Container(
-                                      margin : const EdgeInsets.only(right: 14,),
-                                      child: Icon(Icons.done, size: 24, color: Colors.green[600],)
-                                  ),
-
-                                  const Text("Solid Waste Collection",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 14),
-                              child: Row(
-                                children: [
-                                  Container(
-                                      margin : const EdgeInsets.only(right: 14,),
-                                      child: Icon(Icons.done, size: 24, color: Colors.green[600],)
-                                  ),
-
-                                  const Text("Liquid Waste Collection",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 14),
-                              child: Row(
-                                children: [
-                                  Container(
-                                      margin : const EdgeInsets.only(right: 14,),
-                                      child: Icon(Icons.done, size: 24, color: Colors.green[600],)
-                                  ),
-
-                                  const Text("Incineration Services",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 14),
-                              child: Row(
-                                children: [
-                                  Container(
-                                      margin : const EdgeInsets.only(right: 14,),
-                                      child: Icon(Icons.done, size: 24, color: Colors.green[600],)
-                                  ),
-
-                                  const Text("Membership Card",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 14),
-                              child: Row(
-                                children: [
-                                  Container(
-                                      margin : const EdgeInsets.only(right: 14,),
-                                      child: Icon(Icons.done, size: 24, color: Colors.green[600],)
-                                  ),
-
-                                  const Text("Emergency Visit",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      buildServicesList(widget.arguments.services),
 
 
                       const SizedBox(height: 15,),
@@ -306,10 +190,10 @@ class _PaymentPageState extends State<PaymentPage> {
                             padding:  const EdgeInsets.symmetric(horizontal: 5.0),
                             child: ElevatedButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(builder: (context) => const LandingScreen())
-                                // );
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const PaymentProcedures())
+                                );
                               },
 
                               style: ElevatedButton.styleFrom(
@@ -332,10 +216,10 @@ class _PaymentPageState extends State<PaymentPage> {
                             padding:  const EdgeInsets.symmetric(horizontal: 5.0),
                             child: ElevatedButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(builder: (context) => const LandingScreen())
-                                // );
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const PaymentProcedures())
+                                );
                               },
 
                               style: ElevatedButton.styleFrom(
@@ -358,13 +242,13 @@ class _PaymentPageState extends State<PaymentPage> {
                             padding:  const EdgeInsets.symmetric(horizontal: 5.0),
                             child: ElevatedButton(
                               onPressed: () {
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(builder: (context) => const LandingScreen())
-                                // );
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const PaymentProcedures())
+                                );
                               },
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange[700],
+                                  backgroundColor: Colors.orange[600],
                                   padding: const EdgeInsets.all(6)
                               ),
                               child: const Center(
@@ -391,4 +275,52 @@ class _PaymentPageState extends State<PaymentPage> {
       ),
     );
   }
+
+  Widget buildServicesList(List<String> services) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: services.map((service) {
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 14),
+            child: Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(right: 14),
+                  child: Icon(Icons.done, size: 24, color: Colors.green[600]),
+                ),
+                Text(
+                  service,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+}
+
+
+
+class PaymentArguments {
+  final String  packageName;
+  final String weeklyCost;
+  final String monthlyCost;
+  final  String annualCost;
+  final List<String> services;
+
+  PaymentArguments({
+    required this.packageName,
+    required this.weeklyCost,
+    required this.monthlyCost,
+    required this.annualCost,
+    required this.services
+  });
 }
