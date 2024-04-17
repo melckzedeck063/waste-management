@@ -141,17 +141,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               String username = emailController.text.trim();
                               String password =  passwordController.text.trim();
 
-                              print(username+ " "+  password);
-            
+                              print(username  + " "  + password);
                               auth.loginUser(username: username, password: password, context: context);
+                              print("req response");
+                              print(auth.isError);
 
                               if(auth.requestSuccessful == true){
                                 toastification.show(
                                     context: context,
                                     style: ToastificationStyle.fillColored,
                                     type: ToastificationType.success,
-                                    description: RichText(text:  TextSpan(text: auth.resMessage)),
-                                    alignment: Alignment.topRight,
+                                    description: RichText(text:  const TextSpan(text: "Successfully logged in")),
+                                    alignment: Alignment.bottomLeft,
                                     autoCloseDuration: const Duration(seconds: 4),
                                     icon: const Icon(Icons.check_circle),
                                     primaryColor: Colors.green[700],
@@ -173,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     style: ToastificationStyle.fillColored,
                                     type: ToastificationType.error,
                                     description: RichText(text:  const TextSpan(text: "Login failed please try  again!")),
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.bottomCenter,
                                     autoCloseDuration: const Duration(seconds: 4),
                                     icon: const Icon(Icons.check_circle),
                                     primaryColor: Colors.red[500],

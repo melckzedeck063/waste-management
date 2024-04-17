@@ -1,111 +1,74 @@
-
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:manage_waste/pages/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CurrentUserProvider extends ChangeNotifier {
+  final Future<SharedPreferences> _pref = SharedPreferences.getInstance();
 
-  final Future<SharedPreferences> _pref =  SharedPreferences.getInstance();
-
-  String _token = "";
-  String _userRole = "";
-  String _username = "";
-  String _firstName = "";
+  final String _token = '';
+  final String _userRole = '';
+  final String _username = '';
+  final String _firstName = '';
 
   String get token => _token;
   String get userRole => _userRole;
   String get username => _username;
   String get firstName => _firstName;
 
-  void saveToken(String token) async {
-    SharedPreferences value = await _pref;
-
-    value.setString('token', token);
+  Future<void> saveToken(String token) async {
+    SharedPreferences prefs = await _pref;
+    await prefs.setString('token', token);
   }
 
-  void saveUserRole(String role) async {
-    SharedPreferences value = await _pref;
-
-    value.setString("role", userRole);
+  Future<void> saveUserRole(String role) async {
+    SharedPreferences prefs = await _pref;
+    await prefs.setString('role', role);
   }
 
-  void saveUsername(String username) async {
-    SharedPreferences value = await _pref;
-
-    value.setString("username", username);
+  Future<void> saveUsername(String username) async {
+    SharedPreferences prefs = await _pref;
+    await prefs.setString('username', username);
   }
 
-  void saveFirstname(String username) async {
-    SharedPreferences value = await _pref;
-
-    value.setString("firstname", firstName);
+  Future<void> saveFirstname(String firstName) async {
+    SharedPreferences prefs = await _pref;
+    await prefs.setString('firstname', firstName);
   }
-
-
-
 
   Future<String> getToken() async {
-    SharedPreferences value =  await _pref;
-
-    if(value.containsKey("token")){
-      String data =  value.getString("token")!;
-      _token =  data;
-      notifyListeners();
-      return data;
-    }
-    else {
-      _token = "";
-      notifyListeners();
-      return "";
-    }
+    SharedPreferences prefs = await _pref;
+    return prefs.getString('token') ?? '';
   }
 
   Future<String> getUserRole() async {
-    SharedPreferences value =  await _pref;
-
-    if(value.containsKey("role")){
-      String data =  value.getString("role")!;
-      _userRole =  data;
-      notifyListeners();
-      return data;
-    }
-    else {
-      _userRole = "";
-      notifyListeners();
-      return "";
-    }
+    SharedPreferences prefs = await _pref;
+    return prefs.getString('role') ?? '';
   }
 
   Future<String> getUsername() async {
-    SharedPreferences value =  await _pref;
-
-    if(value.containsKey("username")){
-      String data =  value.getString("username")!;
-      _username =  data;
-      notifyListeners();
-      return data;
-    }
-    else {
-      _username = "";
-      notifyListeners();
-      return "";
-    }
+    SharedPreferences prefs = await _pref;
+    return prefs.getString('username') ?? '';
   }
 
   Future<String> getFirstName() async {
-    SharedPreferences value =  await _pref;
+    SharedPreferences prefs = await _pref;
+    return prefs.getString('firstname') ?? '';
+  }
 
-    if(value.containsKey("firstname")) {
-      String data = value.getString("firstname")!;
-      _firstName = data;
-      notifyListeners();
-      return data;
-    }
-    else {
-      _firstName = "";
-      notifyListeners();
-      return "";
-    }
+  Future<String> getCurrentUserFirstName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('firstname') ?? '';
+  }
+
+  void logoutUser(BuildContext context) async{
+    final value = await _pref;
+
+    value.clear();
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen())
+    );
   }
 
 }

@@ -53,8 +53,8 @@ class _LandingScreenState extends State<LandingScreen> {
             label: "History",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmarks_outlined),
-            label: "Schedule",
+            icon: Icon(Icons.money),
+            label: "Pricing",
           ),
         ],
         currentIndex: selectedScreen,

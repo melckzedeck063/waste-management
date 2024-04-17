@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:manage_waste/pages/my_requests.dart';
 import 'package:manage_waste/pages/notifications.dart';
+import 'package:manage_waste/provider/user_details_provider.dart';
 import 'package:manage_waste/utils/service_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -103,7 +104,9 @@ class HomeScreen extends StatefulWidget {
                     color: Colors.white
                 ),
               ),
-              onTap: (){},
+              onTap: (){
+                CurrentUserProvider().logoutUser(context);
+              },
             )
 
           ],
@@ -128,12 +131,30 @@ class HomeScreen extends StatefulWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Hi Mary",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                                color: Colors.white
-                            ),
+                          FutureBuilder<String>(
+                            future: CurrentUserProvider().getFirstName(), // Future method to get user's first name from shared preferences
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                // Show a loading indicator while waiting for the data
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                // Show an error message if an error occurs
+                                return Text(
+                                  'Error: ${snapshot.error}',
+                                  style: TextStyle(color: Colors.red),
+                                );
+                              } else {
+                                // Display the user's first name if data is retrieved successfully
+                                return Text(
+                                  'Hi ${snapshot.data}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 22,
+                                    color: Colors.white,
+                                  ),
+                                );
+                              }
+                            },
                           ),
 
                           Text("Welcome to our App",

@@ -13,14 +13,17 @@ import '../pages/landing_screen.dart';
 class AuthenticationProvider extends ChangeNotifier {
   final RequestUrl = AppUrls.AuthUrl;
 
+
   bool _isLoading = false;
   bool _requestSuccessful = false;
   String _resMessage = "";
+  bool _isError = true;
 
 
   bool get isLoading => _isLoading;
   String get resMessage => _resMessage;
   bool get requestSuccessful =>  _requestSuccessful;
+  bool get isError => _isError;
 
   void registerUser ({
     required String firstName,
@@ -41,7 +44,7 @@ class AuthenticationProvider extends ChangeNotifier {
       "username" : username,
       "phoneNumber" : telephone,
       "password" : password,
-      "userRole" : "USER"
+      "userRole" : "CUSTOMER"
     };
 
     final Map<String,String> headers = {
@@ -53,23 +56,31 @@ class AuthenticationProvider extends ChangeNotifier {
       http.Response response  = await  http.post(Uri.parse(url), headers: headers, body: json.encode(body));
 
       if(response.statusCode == 200 || response.statusCode == 201) {
+        final respo = json.decode(response.body);
+
+        // print(response.statusCode);
         print(response.body);
 
-        _isLoading = false;
-        _resMessage = "Account created successfuly";
-        _requestSuccessful =  true;
-        notifyListeners();
+        if(respo["error"] == false){
+          _requestSuccessful = true;
+          _isLoading = false;
+          _isError =  false;
+          _resMessage = "Account created successfuly";
+        }
+        else {
+          _requestSuccessful = false;
+          _isError = true;
+          _isLoading = false;
+        }
 
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => const LoginScreen())
-        // );
+
 
       }
       else {
         final res = json.decode(response.body);
-        print(res);
+        print("response : " +res);
         _isLoading = false;
+        _requestSuccessful = false;
         notifyListeners();
       }
 
@@ -87,6 +98,7 @@ class AuthenticationProvider extends ChangeNotifier {
       print(_resMessage);
     } catch(e) {
       _isLoading = false;
+      _requestSuccessful = false;
       _resMessage = "An unexpected error occured: $e";
       print(_resMessage);
     }
@@ -98,73 +110,86 @@ class AuthenticationProvider extends ChangeNotifier {
     required String username,
     required String password,
     required BuildContext context,
-}) async {
-
+  }) async {
     final url = "$RequestUrl/login";
 
-    _isLoading  = true;
+    _isLoading = true;
     notifyListeners();
 
-    Map<String,String> body  = {
-      "username" : username,
-      "password" : password
-    };
-
-    final Map<String, String> headers = {
-      "Content-Type" : "application/json"
-    };
-
-
     try {
-       http.Response response  =  await http.post(Uri.parse(url), headers: headers, body: json.encode(body));
+      Map<String, String> body = {
+        "username": username,
+        "password": password
+      };
 
-       if(response.statusCode == 200 || response.statusCode == 201){
-         _isLoading = false;
-         _requestSuccessful = true;
-         _resMessage = "Login Successful";
+      final Map<String, String> headers = {
+        "Content-Type": "application/json"
+      };
 
-         final resp = json.decode(response.body);
+      final response = await http.post(Uri.parse(url), headers: headers, body: json.encode(body));
 
-         print(resp);
+      final respo = json.decode(response.body);
 
-         String token = resp["token"];
-         String username = resp["username"];
-         String user_role = "";
-         String firstname = resp["fullName"];
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        _requestSuccessful = true;
+        _isError = false;
+        if (respo["error"] == false) {
+          _requestSuccessful = true;
+          _isError = false;
+          _isLoading = false;
+          _resMessage = "Login successful";
 
-         // print(token + " " + firstname);
+          String token = respo["data"]["token"];
+          String username = respo["data"]["username"];
+          String firstname = respo["data"]["firstName"];
 
-         CurrentUserProvider().saveToken(token);
-         CurrentUserProvider().saveUsername(username);
-         CurrentUserProvider().saveFirstname(firstname);
+          print(respo["data"]);
 
-       }
-       else {
-         final res = json.decode(response.body);
-         print(res);
-         _isLoading = false;
-         notifyListeners();
-       }
+          CurrentUserProvider().saveToken(token);
+          CurrentUserProvider().saveUsername(username);
+          CurrentUserProvider().saveFirstname(firstname);
 
-    }on SocketException catch(e) {
+        } else {
+          _isLoading = false;
+          _requestSuccessful = false;
+          _isError = true;
+          _resMessage = "Login failed: ${respo['error']}";
+        }
+      } else {
+        final res = json.decode(response.body);
+        print("response : $res");
+        _isLoading = false;
+        _requestSuccessful = false;
+        _isError = true;
+        _resMessage = "Login failed: ${res['error']}";
+      }
+    } on SocketException catch (e) {
       _isLoading = false;
-      _resMessage = "Connection error";
+      _requestSuccessful = false;
+      _isError = true;
+      _resMessage = "Connection error: $e";
       print("Socket Exception : $e");
-    } on HttpException  catch(e) {
+    } on HttpException catch (e) {
       _isLoading = false;
-      _resMessage = "Http Exception: $e";
+      _isError = true;
+      _resMessage = "HTTP Exception: $e";
       print(_resMessage);
-    } on FormatException catch(e) {
+    } on FormatException catch (e) {
       _isLoading = false;
-      _resMessage  = "Response  format error $e";
+      _isError = true;
+      _resMessage = "Response format error: $e";
       print(_resMessage);
-    } catch(e) {
+    } catch (e) {
       _isLoading = false;
-      _resMessage = "An unexpected error occured: $e";
+      _requestSuccessful = false;
+      _isError = true;
+      _resMessage = "An unexpected error occurred: $e";
       print(_resMessage);
+    } finally {
+      notifyListeners();
     }
-
   }
+
 
 
 
