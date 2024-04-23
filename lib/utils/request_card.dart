@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manage_waste/pages/service_delivery_screen.dart';
 
 class RequestCard extends StatelessWidget {
 
@@ -34,6 +35,10 @@ class RequestCard extends StatelessWidget {
         ),
         onTap: () {
           // Handle tapping on a notification item
+          Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (context)  => const ServiceDelivery() )
+          );
         },
       ),
     );

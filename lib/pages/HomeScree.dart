@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:manage_waste/pages/my_requests.dart';
+import 'package:manage_waste/pages/new_service.dart';
 import 'package:manage_waste/pages/notifications.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
 import 'package:manage_waste/utils/service_card.dart';
@@ -21,6 +22,23 @@ class HomeScreen extends StatefulWidget {
     {"name": "Recycling", "image" : "lib/icons/recycle-bin.png"},
     {"name": "Recycling", "image" : "lib/icons/truck.png"},
   ];
+
+  bool showAdminItems = false;
+
+  @override
+  void initState() {
+    checkUserRole();
+
+    super.initState();
+  }
+
+  void checkUserRole() async {
+    String role =  await CurrentUserProvider().getUserRole();
+
+    setState(() {
+      showAdminItems = (role == "ADMIN" || role == "SUPER_ADMIN");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,16 +64,49 @@ class HomeScreen extends StatefulWidget {
                   child: Column(
                     children: [
                       Icon(Icons.person_2_rounded, size: 64, color: Colors.cyan[100],),
-                      Text("Neema Hammedan",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[100]
-                        ),
-                      )
+                      FutureBuilder<String>(
+                        future: CurrentUserProvider().getUsername(), // Future method to get user's first name from shared preferences
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            // Show a loading indicator while waiting for the data
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            // Show an error message if an error occurs
+                            return Text(
+                              'Error: ${snapshot.error}',
+                              style: TextStyle(color: Colors.red),
+                            );
+                          } else {
+                            // Display the user's first name if data is retrieved successfully
+                            return Text(
+                              '${snapshot.data}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22,
+                                color: Colors.white,
+                              ),
+                            );
+                          }
+                        },
+                      ),
                     ],
                   ),
                 )
+            ),
+
+            if(showAdminItems)
+            ListTile(
+              leading: const Icon(Icons.shopping_cart,  color: Colors.white,),
+              title: const Text("New Service",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.white
+                ),
+              ),
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const NewService()));
+              },
             ),
 
             ListTile(

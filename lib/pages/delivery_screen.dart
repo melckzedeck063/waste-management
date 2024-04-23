@@ -1,0 +1,292 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:manage_waste/config/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:location/location.dart';
+
+
+class DeliveryScreen extends StatefulWidget {
+  const DeliveryScreen({super.key});
+
+  @override
+  State<DeliveryScreen> createState() => _DeliveryScreenState();
+}
+
+class _DeliveryScreenState extends State<DeliveryScreen> {
+
+  final Completer<GoogleMapController> _controller  = Completer();
+
+  static const LatLng sourceLocation = LatLng(-6.1871492323538915, 35.755923355882224);
+  static const LatLng destination = LatLng(-6.188551067565355, 35.777384833128245);
+
+  void makePhoneCall(String phone) async {
+    final Uri url =  Uri(scheme: 'tel',path: phone);
+
+    if(await canLaunchUrl(url)){
+      await launchUrl(url);
+    }
+    else {
+      throw Exception("Could not launch $url");
+    }
+  }
+
+  List<LatLng> polylineCoordinates  = [];
+  Location? currentLocation;
+
+  void getCurrentLocation() {
+    Location location  =  Location();
+
+    location.getLocation().then((location) =>
+     currentLocation = location as Location?
+    );
+
+    print("currentt location: $location");
+  }
+
+  void getPolyyPoints()  async {
+    PolylinePoints polylinePoints =  PolylinePoints();
+
+    PolylineResult result = await  polylinePoints.getRouteBetweenCoordinates(
+        AppConstants().google_key,
+        PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+        PointLatLng(destination.latitude, destination.longitude)
+    );
+
+    if(result.points.isNotEmpty){
+      result.points.forEach((PointLatLng point) => polylineCoordinates.add(
+        LatLng(point.latitude, point.longitude)
+      ),
+      );
+
+      setState(() {
+
+      });
+
+    }
+
+  }
+
+  @override
+  void initState(){
+    getCurrentLocation();
+    getPolyyPoints();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        backgroundColor: Colors.cyan[700],
+        leading: GestureDetector(
+          onTap: (){
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
+        title: const Text("Deliver Service",
+          style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white
+          ),
+        ),
+      ),
+
+
+      body: SafeArea(
+        child: Center(
+          child: Container(
+            child: Column(
+              children: [
+                // currentLocation == null ?
+                //     const Center(
+                //       child: Text("Loading ...."),
+                //     )
+                // :
+                Expanded(
+                  flex: 2,
+                    child:
+                    GoogleMap(
+                      initialCameraPosition: const CameraPosition(
+                        target: sourceLocation, zoom: 14.5,
+                      ),
+                      polylines: {
+                        Polyline(
+                          polylineId: PolylineId("route"),
+                          points: polylineCoordinates,
+                          color: Colors.blueAccent,
+                          width: 6
+                        )
+                      },
+                      markers: {
+                         // Marker(
+                         //    markerId: const MarkerId("currentLocation"),
+                         //    position: LatLng(
+                         //      currentLocation!.latitude!,
+                         //      currentLocation!.longitude!,
+                         //    ),
+                         // ),
+                        const Marker(
+                          markerId: MarkerId("source"),
+                          position: sourceLocation),
+                        const Marker(
+                          markerId: MarkerId("destination"),
+                          position: destination,
+                        ),
+                      },
+                    ),
+            )
+                ]
+          ),
+        ),
+      )
+    ),
+
+
+      bottomNavigationBar: Container(
+        height: 215,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(topRight: Radius.circular(25), topLeft: Radius.circular(25)),
+          color: Colors.white
+        ),
+        child: Column(
+          children: [
+            Container(
+              width: 180,
+              height: 5,
+              margin: const EdgeInsets.symmetric(vertical: 6),
+              decoration: BoxDecoration(
+                  color: Colors.cyan[800]
+              ),
+            ),
+
+            const SizedBox(height: 6,),
+
+            Text("Customer Details",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.grey[700]
+              ),
+            ),
+
+            const  SizedBox(height: 15,),
+
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Telephone",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.grey[700]
+                    ),
+                  ),
+                  const SizedBox(height: 7,),
+                  Row(
+                    children: [
+                       Container(
+                           height: 35,
+                           width: 35,
+                           decoration: BoxDecoration(
+                               color: Colors.grey[300],
+                               borderRadius: BorderRadius.circular(50)
+                           ),
+                           child: GestureDetector(
+                             onTap: () {
+                               makePhoneCall("+255743767676");
+                             },
+                               child: Icon(Icons.call, size: 24, color: Colors.green[600])
+                           )
+            ),
+                      const SizedBox(width: 5,),
+                      Text("+255743767676",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[800],
+                          fontWeight: FontWeight.w600
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 10,),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Name",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.grey[700]
+                    ),
+                  ),
+                  const SizedBox(height: 7,),
+                  Column(
+                    children: [
+                      Text("Neema Hammedan",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[800]
+                        ),
+                      ),
+                      Text("neema@gmail.com",
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[800]
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 14),
+            Padding(
+              padding:  const EdgeInsets.symmetric(horizontal: 25.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const DeliveryScreen())
+                  );
+                },
+
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.cyan[700],
+                    padding: const EdgeInsets.all(8)
+                ),
+                child: const Center(
+                    child: Text("Complete Now",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                      ),
+                    )),
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+}

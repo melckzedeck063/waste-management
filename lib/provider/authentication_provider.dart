@@ -142,12 +142,15 @@ class AuthenticationProvider extends ChangeNotifier {
           String token = respo["data"]["token"];
           String username = respo["data"]["username"];
           String firstname = respo["data"]["firstName"];
+          String userRole =  respo["data"]["userType"];
 
           print(respo["data"]);
+          print(userRole);
 
           CurrentUserProvider().saveToken(token);
           CurrentUserProvider().saveUsername(username);
           CurrentUserProvider().saveFirstname(firstname);
+          CurrentUserProvider().saveUserRole(userRole);
 
         } else {
           _isLoading = false;
