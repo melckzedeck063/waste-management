@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manage_waste/pages/delivery_screen.dart';
+import 'package:manage_waste/provider/user_details_provider.dart';
 
 class ServiceDelivery extends StatefulWidget {
   const ServiceDelivery({super.key});
@@ -9,6 +10,24 @@ class ServiceDelivery extends StatefulWidget {
 }
 
 class _ServiceRequestState extends State<ServiceDelivery> {
+
+  bool showVisitButton = false;
+
+  @override
+  void initState() {
+    checkUserRole();
+    super.initState();
+  }
+
+  void  checkUserRole() async {
+    String role =  await CurrentUserProvider().getUserRole();
+
+    // print("ROLE : $role");
+    setState(() {
+      showVisitButton = (role == "ADMIN" || role == "SUPER_ADMIN");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -448,6 +467,8 @@ class _ServiceRequestState extends State<ServiceDelivery> {
 
 
             const SizedBox(height: 10),
+
+            if(showVisitButton)
             Padding(
               padding:  const EdgeInsets.symmetric(horizontal: 25.0),
               child: ElevatedButton(

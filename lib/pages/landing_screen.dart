@@ -50,7 +50,7 @@ class _LandingScreenState extends State<LandingScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            label: "History",
+            label: "My Requests",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.money),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:manage_waste/pages/about_us_page.dart';
 import 'package:manage_waste/pages/my_requests.dart';
 import 'package:manage_waste/pages/new_service.dart';
 import 'package:manage_waste/pages/notifications.dart';
+import 'package:manage_waste/pages/settings_page.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
 import 'package:manage_waste/utils/service_card.dart';
 
@@ -97,21 +99,7 @@ class HomeScreen extends StatefulWidget {
             if(showAdminItems)
             ListTile(
               leading: const Icon(Icons.shopping_cart,  color: Colors.white,),
-              title: const Text("New Service",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: Colors.white
-                ),
-              ),
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const NewService()));
-              },
-            ),
-
-            ListTile(
-              leading: const Icon(Icons.shopping_cart,  color: Colors.white,),
-              title: const Text("My Requests",
+              title: const Text("Requests",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
@@ -131,7 +119,12 @@ class HomeScreen extends StatefulWidget {
                     color: Colors.white
                 ),
               ),
-              onTap: (){},
+              onTap: (){
+                Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => SettingsPage())
+                );
+              },
             ),
 
             ListTile(
@@ -143,7 +136,12 @@ class HomeScreen extends StatefulWidget {
                     color: Colors.white
                 ),
               ),
-              onTap: (){},
+              onTap: (){
+                Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => AboutUsPage())
+                );
+              },
             ),
 
             ListTile(
