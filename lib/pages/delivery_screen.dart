@@ -5,7 +5,10 @@ import 'package:manage_waste/config/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart' hide LocationAccuracy;
+import 'package:geolocator_platform_interface/src/enums/location_accuracy.dart';
+
 
 
 class DeliveryScreen extends StatefulWidget {
@@ -18,6 +21,11 @@ class DeliveryScreen extends StatefulWidget {
 class _DeliveryScreenState extends State<DeliveryScreen> {
 
   final Completer<GoogleMapController> _controller  = Completer();
+
+  late LatLng _center;
+  late Position currentLocation;
+  late CameraPosition _myPosition;
+  bool isLoading  = true;
 
   static const LatLng sourceLocation = LatLng(-6.1871492323538915, 35.755923355882224);
   static const LatLng destination = LatLng(-6.188551067565355, 35.777384833128245);
@@ -34,17 +42,17 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   }
 
   List<LatLng> polylineCoordinates  = [];
-  Location? currentLocation;
+  // Location? currentLocation;
 
-  void getCurrentLocation() {
-    Location location  =  Location();
-
-    location.getLocation().then((location) =>
-     currentLocation = location as Location?
-    );
-
-    print("currentt location: $location");
-  }
+  // void getCurrentLocation() {
+  //   Location location  =  Location();
+  //
+  //   location.getLocation().then((location) =>
+  //    currentLocation = location as Location?
+  //   );
+  //
+  //   print("currentt location: $location");
+  // }
 
   void getPolyyPoints()  async {
     PolylinePoints polylinePoints =  PolylinePoints();
@@ -71,9 +79,26 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   @override
   void initState(){
-    getCurrentLocation();
+    // getCurrentLocation();
     getPolyyPoints();
     super.initState();
+    getUserLocation();
+  }
+
+  Future<Position> locateUser () async {
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return position;
+  }
+
+  getUserLocation() async {
+    currentLocation =  await locateUser();
+
+    setState(() {
+      _center =  LatLng(currentLocation.latitude, currentLocation.longitude);
+    });
+
+    print("center : $_center");
+    _myPosition = CameraPosition(target: _center, zoom: 14.5);
   }
 
   @override
@@ -141,6 +166,9 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                           markerId: MarkerId("destination"),
                           position: destination,
                         ),
+                      },
+                      onMapCreated: (mapController){
+                        _controller.complete(mapController);
                       },
                     ),
             )

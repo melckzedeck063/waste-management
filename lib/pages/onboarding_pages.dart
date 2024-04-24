@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:manage_waste/pages/login_screen.dart';
 import 'package:manage_waste/utils/promo_content.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+import 'package:geocoding/geocoding.dart';
 
 
 class OnBoardingScreen extends StatefulWidget {
@@ -12,6 +16,7 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
+
   int currentPage = 0;
   List<Map<String, String>> splashData = [
     {
@@ -30,6 +35,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       "desc" : "By following these steps, you should be able to resolve the issue and prevent the RenderFlex children have non-zero flex but incoming heigh"
     },
   ];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +78,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             splashData.length, (index) => buildDot(index: index))
                     ),
 
+
                     Spacer(),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: ElevatedButton(

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+import 'package:geocoding/geocoding.dart';
 
 class ServiceRequest extends StatefulWidget {
   const ServiceRequest({super.key});
@@ -8,6 +11,59 @@ class ServiceRequest extends StatefulWidget {
 }
 
 class _ServiceRequestState extends State<ServiceRequest> {
+
+  late String currentAddress = "";
+  late Position currentLocation = Position(
+    latitude: 0.0,
+    longitude: 0.0,
+    timestamp: DateTime.now(),
+    accuracy: 0.0,
+    altitude: 0.0,
+    altitudeAccuracy: 0.0,
+    heading: 0.0,
+    headingAccuracy: 0.0,
+    speed: 0.0,
+    speedAccuracy: 0.0,
+  );
+
+  @override
+
+  initState(){
+    getCurrentLocation();
+    super.initState();
+  }
+
+  getCurrentLocation(){
+    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high, forceAndroidLocationManager: true)
+        .then((Position position){
+      setState(() {
+        currentLocation = position;
+        getCurrentAddressFromLatLng();
+      });
+    }) .catchError((e){
+      print(e);
+    }) ;
+  }
+
+  getCurrentAddressFromLatLng() async {
+    try{
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          currentLocation.latitude,
+          currentLocation.longitude
+      );
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        currentAddress = "${place.locality},${place.postalCode}, ${place.country}";
+      });
+
+    }catch (e){
+      print(e);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -254,7 +310,8 @@ class _ServiceRequestState extends State<ServiceRequest> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Makulu Dodoma",
+                              if (currentAddress != "")
+                              Text(currentAddress,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -262,12 +319,24 @@ class _ServiceRequestState extends State<ServiceRequest> {
                                 ),
                               ),
                               const SizedBox(height: 7,),
-                              Text("6th Road Chato Street",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[800]
-                                ),
-                              )
+                              if (currentLocation.latitude != 0.0 && currentLocation.latitude !=  0.0)
+                              Column(
+                                children: [
+                                  Text("LAT: ${(currentLocation.latitude).toStringAsFixed(6)}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[800]
+                                    ),
+                                  ),
+                                  Text("LNG : ${(currentLocation.longitude.toStringAsFixed(4))}",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[800]
+                                    ),
+                                  )
+                                ],
+                              ),
+
                             ],
                           ),
                         )
