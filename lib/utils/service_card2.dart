@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:manage_waste/pages/service_request.dart';
 
-class ServiceCard extends StatelessWidget {
+class ServiceCard2 extends StatelessWidget {
 
   final String name;
   final String image;
 
-  const ServiceCard({
+  const ServiceCard2({
     Key? key,
     required this.name,
     required this.image
-}) : super(key: key) ;
+  }) : super(key: key) ;
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +18,17 @@ class ServiceCard extends StatelessWidget {
       onTap: (){
         Navigator.push(
             context,
-          MaterialPageRoute(builder: (context) =>  ServiceRequest(
-            arguments: ServiceArguments(
-                serviceName: name,
-                servicePhoto: image,
-            ),
-          ))
+            MaterialPageRoute(builder: (context) =>  ServiceRequest(
+              arguments: ServiceArguments(
+                  serviceName: name,
+                servicePhoto: image
+              ),
+
+            ))
         );
       },
       child: Container(
-        width: 160,
+        width: 380,
         padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
         margin: const EdgeInsets.only(right: 5, left: 5, top: 5, bottom: 5 ),
         decoration: BoxDecoration(
@@ -43,7 +44,8 @@ class ServiceCard extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 90,
+              height: 120,
+              width: 210,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset(image,
@@ -55,7 +57,7 @@ class ServiceCard extends StatelessWidget {
             Text(name,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 14,
+                  fontSize: 16,
                   color: Colors.grey[700]
               ),
             )

@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:manage_waste/models/bookings_model.dart';
+import 'package:manage_waste/provider/booking_provider.dart';
 import 'package:manage_waste/utils/request_card.dart';
 
 class PendingRequests extends StatefulWidget {
@@ -10,28 +13,6 @@ class PendingRequests extends StatefulWidget {
 
 class _PendingRequestsState extends State<PendingRequests> {
 
-  final List<Map<String,dynamic>> requests = [
-  {
-  "title": "Order #00456",
-  "desc": "Your booking has been placed successfully.",
-  "status": "Pending",
-  },
-  {
-  "title": "Order #10496",
-  "desc": "Hello the due date is tomorrow and well be there on time",
-  "status": "Accepted",
-  },
-    {
-      "title": "Order #03456",
-      "desc": "Your booking has been placed successfully.",
-      "status": "Pending",
-    },
-    {
-      "title": "Order #20456",
-      "desc": "Hello the due date is tomorrow and well be there on time",
-      "status": "Accepted",
-    },
-  ];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,21 +29,82 @@ class _PendingRequestsState extends State<PendingRequests> {
             ),
           ),
 
-          Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 6),
-
-                child: ListView.builder(
-                  itemCount: requests.length,
-                    itemBuilder: (context, index) =>
-                        RequestCard(
-                            title: requests[index]["title"],
-                            desc: requests[index]["desc"],
-                            status: requests[index]["status"]
-                        )
+          FutureBuilder<BookingModel>(
+          future: BookingProvider().getMyBookings(),
+            builder: (context,snapshot){
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: CupertinoColors.activeGreen,
                 ),
-              )
+              );
+            }
+            else if(snapshot.hasError){
+              return Center(
+                child: Text("Error : ${snapshot.error}",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.red[300]
+                ),
+                ),
+              );
+            }
+            else if(snapshot.hasData && snapshot.data != null){
+              final data =  snapshot.data!.content;
+              // print(data);
+              if(data.isNotEmpty){
+                return   Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 6),
+
+                      child: ListView.builder(
+                          itemCount: data.length,
+                          itemBuilder: (context, index) {
+                            final booking  = data[index];
+                            return  RequestCard(
+                              title: booking.serviceName,
+                              orderNo: booking.uuid.substring(0,6).toUpperCase(),
+                              status: booking.status,
+                              date: booking.createdAt.toString().substring(0,20),
+                              pickupdate: booking.pickupDate,
+                              wasteType: booking.wasteType,
+                              servicePhoto: booking.servicePhoto,
+                              bookedBy: booking.bookedBy,
+                            );
+                          }
+
+                      ),
+                    )
+                );
+              }
+              else {
+                return  Center(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 190),
+                    child: Text(
+                      "No booking data found",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 20,
+                        color: Colors.red[300]
+                      ),
+                    ),
+                  ),
+                );
+              }
+            }
+            else {
+              return const Center(
+                child: Text(
+                  "No booking data found",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                ),
+              );
+            }
+            }
           ),
+
+
 
           const SizedBox(height: 10,)
         ],

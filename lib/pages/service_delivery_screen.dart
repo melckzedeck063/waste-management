@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:manage_waste/pages/delivery_screen.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
+import 'package:toastification/toastification.dart';
 
 class ServiceDelivery extends StatefulWidget {
-  const ServiceDelivery({super.key});
+  final BookingArguments  arguments;
+
+  const ServiceDelivery({
+    Key? key,
+    required  this.arguments
+});
 
   @override
   State<ServiceDelivery> createState() => _ServiceRequestState();
@@ -74,7 +80,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                         child: ClipRRect(
                           borderRadius: const BorderRadius.only(topLeft: Radius.circular(20)),
                           child: Image.asset(
-                            "lib/images/truck.png",
+                            widget.arguments.servicePhoto,
                             height: 150,
                             fit: BoxFit.cover,
                           ),
@@ -108,7 +114,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                               ),
                             ),
 
-                            Text("Waste Collection",
+                            Text(widget.arguments.title,
                               style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.grey[700],
@@ -388,7 +394,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Tue 20-04-2024",
+                              Text("Scheduled Date",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -396,7 +402,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                                 ),
                               ),
                               const SizedBox(height: 7,),
-                              Text("From: 10:00 AM ",
+                              Text(widget.arguments.pickupdate.substring(0,10),
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[800]
@@ -448,7 +454,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                                 ),
                               ),
                               const SizedBox(height: 7,),
-                              Text("Solid wastes",
+                              Text(widget.arguments.wasteType,
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[800]
@@ -473,9 +479,21 @@ class _ServiceRequestState extends State<ServiceDelivery> {
               padding:  const EdgeInsets.symmetric(horizontal: 25.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const DeliveryScreen())
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(builder: (context) => const DeliveryScreen())
+                  // );
+
+                  toastification.show(
+                      context: context,
+                      style: ToastificationStyle.fillColored,
+                      type: ToastificationType.info,
+                      description: RichText(text:  const TextSpan(text: "Please verify payment first", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))),
+                      alignment: Alignment.bottomLeft,
+                      autoCloseDuration: const Duration(seconds: 4),
+                      icon: const Icon(Icons.info),
+                      primaryColor: Colors.orange[500],
+                      backgroundColor: Colors.white
                   );
                 },
 
@@ -501,4 +519,31 @@ class _ServiceRequestState extends State<ServiceDelivery> {
       ),
     );
   }
+}
+
+
+class BookingArguments {
+
+   String title;
+   String orderNo;
+   String status;
+   String date;
+   String pickupdate;
+   String wasteType;
+   String servicePhoto;
+  // final LatLng latitude;
+  // final LatLng longtude;
+
+  BookingArguments({
+    required this.title,
+    required this.orderNo,
+    required this.status,
+    required this.date,
+    required this.pickupdate,
+    required this.wasteType,
+    required this.servicePhoto,
+    // required this.latitude,
+    // required this.longtude
+  });
+
 }

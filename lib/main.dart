@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manage_waste/pages/splash_screen.dart';
 import 'package:manage_waste/provider/authentication_provider.dart';
+import 'package:manage_waste/provider/booking_provider.dart';
 import 'package:provider/provider.dart';
 
 
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
     return  MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
+          ChangeNotifierProvider(create: (_) => BookingProvider())
         ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

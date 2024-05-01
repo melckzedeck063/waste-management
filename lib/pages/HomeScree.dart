@@ -4,9 +4,15 @@ import 'package:manage_waste/pages/about_us_page.dart';
 import 'package:manage_waste/pages/my_requests.dart';
 import 'package:manage_waste/pages/new_service.dart';
 import 'package:manage_waste/pages/notifications.dart';
+import 'package:manage_waste/pages/privacy_page.dart';
+import 'package:manage_waste/pages/profile_page.dart';
+import 'package:manage_waste/pages/requests_page.dart';
 import 'package:manage_waste/pages/settings_page.dart';
+import 'package:manage_waste/pages/terms_uses_page.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
 import 'package:manage_waste/utils/service_card.dart';
+
+import '../utils/service_card2.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,10 +25,8 @@ class HomeScreen extends StatefulWidget {
 
   final List services =[
     {"name": "Recycling", "image" : "lib/icons/recycle-bin.png"},
-    {"name": "Waste Collecting", "image" : "lib/icons/truck.png"},
     {"name": "Incinerating", "image" : "lib/icons/tank.png"},
-    {"name": "Recycling", "image" : "lib/icons/recycle-bin.png"},
-    {"name": "Recycling", "image" : "lib/icons/truck.png"},
+    // {"name": "Waste Collecting", "image" : "lib/icons/truck.png"},
   ];
 
   bool showAdminItems = false;
@@ -107,12 +111,12 @@ class HomeScreen extends StatefulWidget {
               ),
               ),
               onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyRequests()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AllRequests()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.settings,  color: Colors.white,),
-              title: const Text("Settings",
+              title: const Text("My Account",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
@@ -122,7 +126,7 @@ class HomeScreen extends StatefulWidget {
               onTap: (){
                 Navigator.push(
                     context, 
-                    MaterialPageRoute(builder: (context) => SettingsPage())
+                    MaterialPageRoute(builder: (context) => ProfilePage())
                 );
               },
             ),
@@ -143,6 +147,41 @@ class HomeScreen extends StatefulWidget {
                 );
               },
             ),
+
+            ListTile(
+              leading: const Icon(Icons.info,  color: Colors.white,),
+              title: const Text("Privacy Policy",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.white
+                ),
+              ),
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PrivacyPolicyPage())
+                );
+              },
+            ),
+
+            ListTile(
+              leading: const Icon(Icons.info,  color: Colors.white,),
+              title: const Text("Terms of Service",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.white
+                ),
+              ),
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TermsOfUsePage())
+                );
+              },
+            ),
+
 
             ListTile(
               leading: const Icon(Icons.logout,  color: Colors.white,),
@@ -326,7 +365,8 @@ class HomeScreen extends StatefulWidget {
                       const SizedBox(height: 13),
 
 
-                        Expanded(
+                        Container(
+                          height: 170,
                           child: ListView.builder(
                         itemCount: (services.length / 2).ceil(),
                           itemBuilder: (context, index){
@@ -350,6 +390,14 @@ class HomeScreen extends StatefulWidget {
                           }
                       ),
                         ),
+
+            // const SizedBox(height: 10,),
+
+            Container(
+              height: 180,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child:  ServiceCard2(name: "Waste Collection", image: "lib/icons/truck.png",),
+            ),
 
             const  SizedBox(height: 8,)
 

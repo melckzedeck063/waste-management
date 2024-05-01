@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:manage_waste/pages/admin_pending_requests.dart';
 import 'package:manage_waste/pages/pending_requests.dart';
 
-class MyRequests extends StatefulWidget {
-  const MyRequests({super.key});
+class AllRequests extends StatefulWidget {
+  const AllRequests({super.key});
 
   @override
-  State<MyRequests> createState() => _MyRequestsState();
+  State<AllRequests> createState() => _AllRequestsState();
 }
 
-class _MyRequestsState extends State<MyRequests> {
+class _AllRequestsState extends State<AllRequests> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -26,7 +27,7 @@ class _MyRequestsState extends State<MyRequests> {
               color: Colors.white,
             ),
           ),
-          title: const Text('My Requests',
+          title: const Text('All Requests',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -55,13 +56,13 @@ class _MyRequestsState extends State<MyRequests> {
         ),
         body:  TabBarView(
           children: [
-            const PendingRequests(),
+            const AdminPendingRequests(),
             Center(child: Text('No data available to display',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.red[300]
-            ),
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red[300]
+              ),
             )),
           ],
         ),
