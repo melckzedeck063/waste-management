@@ -648,13 +648,13 @@ class _ServiceRequestState extends State<ServiceRequest> {
                       //     context,
                       //     MaterialPageRoute(builder: (context) => const LandingScreen())
                       // );
-                      print(selectedDate);
-                      print(selectedWasteCategory);
-                      print(currentLocation.latitude);
-                      print(currentLocation.longitude.toString());
-                      print(widget.arguments.serviceName);
-                      print(widget.arguments.servicePhoto);
-                      print(defaultPrice);
+                      // print(selectedDate);
+                      // print(selectedWasteCategory);
+                      // print(currentLocation.latitude);
+                      // print(currentLocation.longitude.toString());
+                      // print(widget.arguments.serviceName);
+                      // print(widget.arguments.servicePhoto);
+                      // print(defaultPrice);
 
                       String serviceName = widget.arguments.serviceName;
                       String servicePhoto = widget.arguments.servicePhoto;
@@ -665,7 +665,7 @@ class _ServiceRequestState extends State<ServiceRequest> {
                       String wasteType = selectedWasteCategory.toString();
 
 
-                      book.createBooking(serviceName: serviceName, servicePhoto: servicePhoto, servicePrice: servicePrice, latitude: latitude, longtude: longtude, pickupd_date: pickupd_date, wasteType: wasteType);
+                      book.createBooking(serviceName: serviceName, servicePhoto: servicePhoto, servicePrice: servicePrice, latitude: latitude, longtude: longtude, pickupd_date: pickupd_date, wasteType: wasteType, context: context);
 
     if(book.requestSuccessful == true) {
       toastification.show(
