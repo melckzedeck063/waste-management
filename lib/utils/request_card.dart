@@ -11,9 +11,9 @@ class RequestCard extends StatelessWidget {
   final String pickupdate;
   final String wasteType;
   final String servicePhoto;
-  final String bookedBy;
-  // final LatLng latitude;
-  // final LatLng longtude;
+  final dynamic bookedBy;
+  final double latitude;
+  final double longtude;
 
   const RequestCard({
     Key?key,
@@ -24,9 +24,9 @@ class RequestCard extends StatelessWidget {
     required this.pickupdate,
     required this.wasteType,
     required this.servicePhoto,
-    required this.bookedBy
-    // required this.latitude,
-    // required this.longtude
+    required this.bookedBy,
+    required this.latitude,
+    required this.longtude
   }) : super(key: key);
 
   @override
@@ -87,12 +87,15 @@ class RequestCard extends StatelessWidget {
               MaterialPageRoute(builder: (context)  =>  ServiceDelivery(
                 arguments: BookingArguments(
                     title: title,
-                orderNo: orderNo,
+                 orderNo: orderNo,
                  status : status,
                  date : date,
                     pickupdate: pickupdate,
                      wasteType: wasteType,
-                     servicePhoto: servicePhoto
+                     servicePhoto: servicePhoto,
+                  latitude: latitude,
+                  longtude: longtude,
+                  bookedBy: bookedBy
                 ),
               ) )
           );

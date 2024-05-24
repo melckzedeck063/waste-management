@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:manage_waste/pages/delivery_screen.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
 import 'package:toastification/toastification.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
+
 
 class ServiceDelivery extends StatefulWidget {
   final BookingArguments  arguments;
@@ -18,10 +21,24 @@ class ServiceDelivery extends StatefulWidget {
 class _ServiceRequestState extends State<ServiceDelivery> {
 
   bool showVisitButton = false;
+  late String currentAddress = "";
+  late Position currentLocation = Position(
+    latitude: 0.0,
+    longitude: 0.0,
+    timestamp: DateTime.now(),
+    accuracy: 0.0,
+    altitude: 0.0,
+    altitudeAccuracy: 0.0,
+    heading: 0.0,
+    headingAccuracy: 0.0,
+    speed: 0.0,
+    speedAccuracy: 0.0,
+  );
 
   @override
   void initState() {
     checkUserRole();
+    getCurrentAddressFromLatLng();
     super.initState();
   }
 
@@ -34,8 +51,30 @@ class _ServiceRequestState extends State<ServiceDelivery> {
     });
   }
 
+  getCurrentAddressFromLatLng() async {
+    try{
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          widget.arguments.latitude,
+          widget.arguments.longtude
+      );
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        currentAddress = "${place.locality},${place.postalCode}, ${place.country}";
+      });
+
+    }catch (e){
+      print(e);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
+    // print( "LAT :  ${widget.arguments.latitude}");
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -280,7 +319,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Makulu Dodoma",
+                              Text(currentAddress,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -288,11 +327,19 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                                 ),
                               ),
                               const SizedBox(height: 7,),
-                              Text("6th Road Chato Street",
+                              Text("LAT : ${(widget.arguments.latitude).toStringAsFixed(5)}",
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[800]
                                 ),
+
+                              ),
+                              Text("LNG : ${widget.arguments.longtude}",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[800]
+                                ),
+
                               )
                             ],
                           ),
@@ -341,7 +388,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                               //    color: Colors.grey[800]
                               //  ),
                               // ),
-                              Text("Neema Hammedan",
+                              Text("${widget.arguments.bookedBy['firstName']} ${widget.arguments.bookedBy['lastName']}",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -349,7 +396,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                                 ),
                               ),
                               const SizedBox(height: 7,),
-                              Text("+255743767676",
+                              Text("+${widget.arguments.bookedBy['phone']}",
                                 style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[800]
@@ -479,22 +526,22 @@ class _ServiceRequestState extends State<ServiceDelivery> {
               padding:  const EdgeInsets.symmetric(horizontal: 25.0),
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(builder: (context) => const DeliveryScreen())
-                  // );
-
-                  toastification.show(
-                      context: context,
-                      style: ToastificationStyle.fillColored,
-                      type: ToastificationType.info,
-                      description: RichText(text:  const TextSpan(text: "Please verify payment first", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))),
-                      alignment: Alignment.bottomLeft,
-                      autoCloseDuration: const Duration(seconds: 4),
-                      icon: const Icon(Icons.info),
-                      primaryColor: Colors.orange[500],
-                      backgroundColor: Colors.white
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const DeliveryScreen())
                   );
+
+                  // toastification.show(
+                  //     context: context,
+                  //     style: ToastificationStyle.fillColored,
+                  //     type: ToastificationType.info,
+                  //     description: RichText(text:  const TextSpan(text: "Please verify payment first", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16))),
+                  //     alignment: Alignment.bottomLeft,
+                  //     autoCloseDuration: const Duration(seconds: 4),
+                  //     icon: const Icon(Icons.info),
+                  //     primaryColor: Colors.orange[500],
+                  //     backgroundColor: Colors.white
+                  // );
                 },
 
                 style: ElevatedButton.styleFrom(
@@ -523,7 +570,6 @@ class _ServiceRequestState extends State<ServiceDelivery> {
 
 
 class BookingArguments {
-
    String title;
    String orderNo;
    String status;
@@ -531,8 +577,9 @@ class BookingArguments {
    String pickupdate;
    String wasteType;
    String servicePhoto;
-  // final LatLng latitude;
-  // final LatLng longtude;
+   double latitude;
+   double longtude;
+  dynamic bookedBy;
 
   BookingArguments({
     required this.title,
@@ -542,8 +589,9 @@ class BookingArguments {
     required this.pickupdate,
     required this.wasteType,
     required this.servicePhoto,
-    // required this.latitude,
-    // required this.longtude
+    required this.latitude,
+    required this.longtude,
+    required this.bookedBy
   });
 
 }

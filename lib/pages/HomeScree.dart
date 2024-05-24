@@ -11,7 +11,9 @@ import 'package:manage_waste/pages/settings_page.dart';
 import 'package:manage_waste/pages/terms_uses_page.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
 import 'package:manage_waste/utils/service_card.dart';
+import 'package:manage_waste/utils/welcome_banner.dart';
 
+import '../utils/intro_screen.dart';
 import '../utils/service_card2.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,7 +28,7 @@ class HomeScreen extends StatefulWidget {
   final List services =[
     {"name": "Recycling", "image" : "lib/icons/recycle-bin.png"},
     {"name": "Incinerating", "image" : "lib/icons/tank.png"},
-    // {"name": "Waste Collecting", "image" : "lib/icons/truck.png"},
+    {"name": "Waste Collecting", "image" : "lib/icons/truck.png"},
   ];
 
   bool showAdminItems = false;
@@ -279,11 +281,11 @@ class HomeScreen extends StatefulWidget {
                     ],
                   ),
 
-                  const SizedBox(height: 20,),
+                  const SizedBox(height: 10,),
                   Column(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -313,7 +315,7 @@ class HomeScreen extends StatefulWidget {
                                     )
                                   ],
                                 ),
-                                
+
                                 Container(
                                   height: 75,
                                   width: 75,
@@ -352,6 +354,7 @@ class HomeScreen extends StatefulWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+
                           Text("Services",
                             style: TextStyle(
                               fontSize: 18,
@@ -366,7 +369,7 @@ class HomeScreen extends StatefulWidget {
 
 
                         Container(
-                          height: 170,
+                          height: 230,
                           child: ListView.builder(
                         itemCount: (services.length / 2).ceil(),
                           itemBuilder: (context, index){
@@ -391,15 +394,16 @@ class HomeScreen extends StatefulWidget {
                       ),
                         ),
 
-            // const SizedBox(height: 10,),
+
+            const  SizedBox(height: 11,),
 
             Container(
-              height: 180,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child:  ServiceCard2(name: "Waste Collection", image: "lib/icons/truck.png",),
+              height: 140,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child:  IntroductionScreen()
             ),
 
-            const  SizedBox(height: 8,)
+            const  SizedBox(height: 6,),
 
 
           ],

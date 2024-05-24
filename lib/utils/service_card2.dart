@@ -28,7 +28,7 @@ class ServiceCard2 extends StatelessWidget {
         );
       },
       child: Container(
-        width: 380,
+        width: 330,
         padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
         margin: const EdgeInsets.only(right: 5, left: 5, top: 5, bottom: 5 ),
         decoration: BoxDecoration(
@@ -44,8 +44,8 @@ class ServiceCard2 extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 120,
-              width: 210,
+              height: 100,
+              width: 190,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset(image,

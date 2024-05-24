@@ -71,6 +71,8 @@ class _PendingRequestsState extends State<PendingRequests> {
                               wasteType: booking.wasteType,
                               servicePhoto: booking.servicePhoto,
                               bookedBy: booking.bookedBy,
+                              latitude: booking.latitude,
+                              longtude: booking.longtude,
                             );
                           }
 

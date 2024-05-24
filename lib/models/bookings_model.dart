@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BookingModel {
 
@@ -27,9 +28,9 @@ class Content{
   String serviceName;
   String servicePhoto;
   String servicePrice;
-  String latitude;
-  String longtude;
-  String bookedBy;
+  double latitude;
+  double longtude;
+  dynamic bookedBy;
   String pickupDate;
   String status;
   String wasteType;
@@ -58,11 +59,11 @@ class Content{
       uuid: json['uuid'] ?? "",
       serviceName: json['serviceName'] ?? "",
       servicePrice: json['servicePrice'] ?? "0",
-      latitude:  json['latitude'] ?? "",
-      longtude:  json['longtude'] ?? "",
+        latitude: json['latitude'] is double ? json['latitude'] : double.parse(json['latitude']),
+        longtude: json['longtude'] is double ? json['longtude'] : double.parse(json['longtude']),
       servicePhoto: json['servicePhoto'] ?? "",
       status: json['status'] ?? "",
-      bookedBy: json['registeredBy'] ?? "",
+      bookedBy: json['bookedBy'] ?? "",
       pickupDate: json['pickupDate'] ?? "",
       wasteType: json['wasteType'] ?? ""
     );
