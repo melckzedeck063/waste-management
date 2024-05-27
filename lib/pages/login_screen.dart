@@ -141,47 +141,49 @@ class _LoginScreenState extends State<LoginScreen> {
                               String username = emailController.text.trim();
                               String password =  passwordController.text.trim();
 
-                              print(username  + " "  + password);
                               auth.loginUser(username: username, password: password, context: context);
-                              print("req response");
                               print(auth.isError);
 
-                              if(auth.requestSuccessful == true){
-                                toastification.show(
-                                    context: context,
-                                    style: ToastificationStyle.fillColored,
-                                    type: ToastificationType.success,
-                                    description: RichText(text:  const TextSpan(text: "Successfully logged in")),
-                                    alignment: Alignment.bottomLeft,
-                                    autoCloseDuration: const Duration(seconds: 4),
-                                    icon: const Icon(Icons.check_circle),
-                                    primaryColor: Colors.green[700],
-                                    backgroundColor: Colors.white
-                                );
+                              Future.delayed(Duration(seconds: 3), (){
 
-                                Future.delayed(
-                                    const Duration(seconds: 5), () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const LandingScreen())
+                                if(auth.requestSuccessful == true){
+                                  toastification.show(
+                                      context: context,
+                                      style: ToastificationStyle.fillColored,
+                                      type: ToastificationType.success,
+                                      description: RichText(text:  const TextSpan(text: "Successfully logged in")),
+                                      alignment: Alignment.bottomLeft,
+                                      autoCloseDuration: const Duration(seconds: 4),
+                                      icon: const Icon(Icons.check_circle),
+                                      primaryColor: Colors.green[700],
+                                      backgroundColor: Colors.white
                                   );
-                                }
-                                );
-                              }else {
-                                toastification.show(
-                                    context: context,
-                                    style: ToastificationStyle.fillColored,
-                                    type: ToastificationType.error,
-                                    description: RichText(text:  const TextSpan(text: "Login failed please try  again!")),
-                                    alignment: Alignment.bottomCenter,
-                                    autoCloseDuration: const Duration(seconds: 4),
-                                    icon: const Icon(Icons.check_circle),
-                                    primaryColor: Colors.red[500],
-                                    backgroundColor: Colors.white
-                                );
 
-                              }
+                                  Future.delayed(
+                                      const Duration(seconds: 5), () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => const LandingScreen())
+                                    );
+                                  }
+                                  );
+                                }else {
+                                  toastification.show(
+                                      context: context,
+                                      style: ToastificationStyle.fillColored,
+                                      type: ToastificationType.error,
+                                      description: RichText(text:   TextSpan(text: auth.resMessage)),
+                                      alignment: Alignment.bottomCenter,
+                                      autoCloseDuration: const Duration(seconds: 4),
+                                      icon: const Icon(Icons.cancel, color: Colors.white,),
+                                      primaryColor: Colors.red[500],
+                                      backgroundColor: Colors.white
+                                  );
+
+                                }
+
+                              });
                             }
                             else {
                               print("Form is not okay");

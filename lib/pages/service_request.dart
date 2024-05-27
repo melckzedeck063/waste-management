@@ -667,19 +667,35 @@ class _ServiceRequestState extends State<ServiceRequest> {
 
                       book.createBooking(serviceName: serviceName, servicePhoto: servicePhoto, servicePrice: servicePrice, latitude: latitude, longtude: longtude, pickupd_date: pickupd_date, wasteType: wasteType, context: context);
 
-    if(book.requestSuccessful == true) {
-      toastification.show(
-          context: context,
-          style: ToastificationStyle.fillColored,
-          type: ToastificationType.success,
-          description: RichText(text: TextSpan(text: book.resMessage)),
-          alignment: Alignment.topRight,
-          autoCloseDuration: const Duration(seconds: 4),
-          icon: const Icon(Icons.check_circle),
-          primaryColor: Colors.green[700],
-          backgroundColor: Colors.white
-      );
-    }
+                      Future.delayed(Duration(seconds: 3), (){
+                        if(book.requestSuccessful == true) {
+                          toastification.show(
+                              context: context,
+                              style: ToastificationStyle.fillColored,
+                              type: ToastificationType.success,
+                              description: RichText(text: TextSpan(text: book.resMessage)),
+                              alignment: Alignment.topRight,
+                              autoCloseDuration: const Duration(seconds: 4),
+                              icon: const Icon(Icons.check_circle),
+                              primaryColor: Colors.green[700],
+                              backgroundColor: Colors.white
+                          );
+                        }
+                        else {
+                          toastification.show(
+                              context: context,
+                              style: ToastificationStyle.fillColored,
+                              type: ToastificationType.error,
+                              description: RichText(text: TextSpan(text: book.resMessage)),
+                              alignment: Alignment.topRight,
+                              autoCloseDuration: const Duration(seconds: 4),
+                              icon: const Icon(Icons.cancel, color: Colors.white,),
+                              primaryColor: Colors.red[300],
+                              backgroundColor: Colors.white
+                          );
+                        }
+                      });
+
 
     },
 

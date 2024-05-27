@@ -291,42 +291,38 @@ class SignUpScreenState extends State<SignupScreen> {
 
                                   auth.registerUser(firstName: firstName, lastName: lastName, username: email, telephone: phoneNumber, password: password, context: context);
 
-                                  if(auth.requestSuccessful == true){
-                                    toastification.show(
-                                        context: context,
-                                        style: ToastificationStyle.fillColored,
-                                        type: ToastificationType.success,
-                                        description: RichText(text:  TextSpan(text: auth.resMessage)),
-                                        alignment: Alignment.topRight,
-                                        autoCloseDuration: const Duration(seconds: 4),
-                                        icon: const Icon(Icons.check_circle),
-                                        primaryColor: Colors.green[700],
-                                        backgroundColor: Colors.white
-                                    );
+                                  Future.delayed(Duration(seconds: 3),(){
 
-                                    Future.delayed(
-                                        const Duration(seconds: 5), () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => const LoginScreen())
+                                    if(auth.requestSuccessful == true){
+                                      toastification.show(
+                                          context: context,
+                                          style: ToastificationStyle.fillColored,
+                                          type: ToastificationType.success,
+                                          description: RichText(text:  TextSpan(text: auth.resMessage)),
+                                          alignment: Alignment.topRight,
+                                          autoCloseDuration: const Duration(seconds: 4),
+                                          icon: const Icon(Icons.check_circle),
+                                          primaryColor: Colors.green[700],
+                                          backgroundColor: Colors.white
                                       );
-                                    }
-                                    );
-                                  }else {
-                                    toastification.show(
-                                        context: context,
-                                        style: ToastificationStyle.fillColored,
-                                        type: ToastificationType.error,
-                                        description: RichText(text:  const TextSpan(text: "Request failed please try  again!")),
-                                        alignment: Alignment.topRight,
-                                        autoCloseDuration: const Duration(seconds: 4),
-                                        icon: const Icon(Icons.check_circle),
-                                        primaryColor: Colors.red[500],
-                                        backgroundColor: Colors.white
-                                    );
 
-                                  }
+                                    }else {
+                                      toastification.show(
+                                          context: context,
+                                          style: ToastificationStyle.fillColored,
+                                          type: ToastificationType.error,
+                                          description: RichText(text:  TextSpan(text: auth.resMessage)),
+                                          alignment: Alignment.topRight,
+                                          autoCloseDuration: const Duration(seconds: 4),
+                                          icon: const Icon(Icons.cancel, color: Colors.white,),
+                                          primaryColor: Colors.red[500],
+                                          backgroundColor: Colors.white
+                                      );
+
+                                    }
+
+                                  });
+
 
 
                                 }

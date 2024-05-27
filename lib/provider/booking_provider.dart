@@ -65,21 +65,22 @@ class BookingProvider extends ChangeNotifier{
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> respo = json.decode(response.body);
-        print(response.headers);
-        print(response.body);
 
-        if (!respo["error"]) {
+        if (respo["error"] == false) {
           _requestSuccessful = true;
           _isLoading = false;
           _isError = false;
-          _resMessage = "Booking placed successfully";
+          _resMessage = respo['message'];
 
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MyRequests())
-          );
+          Future.delayed(const Duration(seconds: 5),(){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyRequests())
+            );
+          });
         } else {
           _requestSuccessful = false;
+          _resMessage = respo['message'];
           _isError = true;
           _isLoading = false;
         }

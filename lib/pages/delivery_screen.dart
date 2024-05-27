@@ -12,7 +12,12 @@ import 'package:geolocator_platform_interface/src/enums/location_accuracy.dart';
 
 
 class DeliveryScreen extends StatefulWidget {
-  const DeliveryScreen({super.key});
+  final DeliveryArguments  arguments;
+
+  const DeliveryScreen({
+    Key ? key,
+    required this.arguments
+  });
 
   @override
   State<DeliveryScreen> createState() => _DeliveryScreenState();
@@ -23,12 +28,24 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   final Completer<GoogleMapController> _controller  = Completer();
 
   late LatLng _center;
-  late Position currentLocation;
   late CameraPosition _myPosition;
   bool isLoading  = true;
 
   static const LatLng sourceLocation = LatLng(-6.1871492323538915, 35.755923355882224);
-  static const LatLng destination = LatLng(-6.188551067565355, 35.777384833128245);
+  // static const LatLng destination = LatLng(-6.188551067565355, 35.777384833128245);
+
+  late Position currentLocation = Position(
+    latitude: 0.0,
+    longitude: 0.0,
+    timestamp: DateTime.now(),
+    accuracy: 0.0,
+    altitude: 0.0,
+    altitudeAccuracy: 0.0,
+    heading: 0.0,
+    headingAccuracy: 0.0,
+    speed: 0.0,
+    speedAccuracy: 0.0,
+  );
 
   void makePhoneCall(String phone) async {
     final Uri url =  Uri(scheme: 'tel',path: phone);
@@ -60,7 +77,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
     PolylineResult result = await  polylinePoints.getRouteBetweenCoordinates(
         AppConstants().google_key,
         PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-        PointLatLng(destination.latitude, destination.longitude)
+        PointLatLng(widget.arguments.latitude, widget.arguments.longtude)
     );
 
     if(result.points.isNotEmpty){
@@ -82,27 +99,26 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
     // getCurrentLocation();
     getPolyyPoints();
     super.initState();
-    getUserLocation();
+    getCurrentLocation();
   }
 
-  Future<Position> locateUser () async {
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    return position;
-  }
 
-  getUserLocation() async {
-    currentLocation =  await locateUser();
-
-    setState(() {
-      _center =  LatLng(currentLocation.latitude, currentLocation.longitude);
-    });
-
-    print("center : $_center");
-    _myPosition = CameraPosition(target: _center, zoom: 14.5);
+  getCurrentLocation(){
+    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high, forceAndroidLocationManager: true)
+        .then((Position position){
+      setState(() {
+        currentLocation = position;
+        // getCurrentAddressFromLatLng();
+      });
+    }) .catchError((e){
+      print(e);
+    }) ;
   }
 
   @override
   Widget build(BuildContext context) {
+
+    // static const LatLng destination = LatLng(-6.188551067565355, 35.777384833128245);
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -141,7 +157,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                     child:
                     GoogleMap(
                       initialCameraPosition: const CameraPosition(
-                        target: sourceLocation, zoom: 14.5,
+                        target: sourceLocation, zoom: 18.5,
                       ),
                       polylines: {
                         Polyline(
@@ -162,9 +178,9 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                         const Marker(
                           markerId: MarkerId("source"),
                           position: sourceLocation),
-                        const Marker(
-                          markerId: MarkerId("destination"),
-                          position: destination,
+                         Marker(
+                          markerId: const MarkerId("destination"),
+                          position: LatLng(widget.arguments.latitude, widget.arguments.longtude),
                         ),
                       },
                       onMapCreated: (mapController){
@@ -232,13 +248,13 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                            ),
                            child: GestureDetector(
                              onTap: () {
-                               makePhoneCall("+255743767676");
+                               makePhoneCall("+${widget.arguments.bookedBy['phone']}");
                              },
                                child: Icon(Icons.call, size: 24, color: Colors.green[600])
                            )
             ),
                       const SizedBox(width: 5,),
-                      Text("+255743767676",
+                      Text("+${widget.arguments.bookedBy['phone']}",
                         style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey[800],
@@ -268,13 +284,14 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                   const SizedBox(height: 7,),
                   Column(
                     children: [
-                      Text("Neema Hammedan",
+                      Text( " ${widget.arguments.bookedBy['firstName']} ${widget.arguments.bookedBy['lastName']}",
                         style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                             color: Colors.grey[800]
                         ),
                       ),
-                      Text("neema@gmail.com",
+                      Text(widget.arguments.bookedBy['username'],
                         style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[800]
@@ -291,10 +308,10 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
               padding:  const EdgeInsets.symmetric(horizontal: 25.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const DeliveryScreen())
-                  );
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(builder: (context) => const DeliveryScreen())
+                  // );
                 },
 
                 style: ElevatedButton.styleFrom(
@@ -317,4 +334,21 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
       ),
     );
   }
+}
+
+
+class DeliveryArguments {
+  String title;
+  String date;
+  double latitude;
+  double longtude;
+  dynamic bookedBy;
+
+  DeliveryArguments({
+    required this.title,
+    required this.date,
+    required this.latitude,
+    required this.longtude,
+    required this.bookedBy
+  });
 }

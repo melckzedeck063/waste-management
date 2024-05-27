@@ -528,7 +528,16 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const DeliveryScreen())
+                      MaterialPageRoute(builder: (context) =>  DeliveryScreen(
+                        arguments: DeliveryArguments(
+                            title: widget.arguments.title,
+                            date: widget.arguments.date,
+                          latitude: widget.arguments.latitude,
+                          longtude: widget.arguments.longtude,
+                          bookedBy: widget.arguments.bookedBy,
+
+                        ),
+                      ))
                   );
 
                   // toastification.show(

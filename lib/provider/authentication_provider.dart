@@ -58,17 +58,22 @@ class AuthenticationProvider extends ChangeNotifier {
       if(response.statusCode == 200 || response.statusCode == 201) {
         final respo = json.decode(response.body);
 
-        // print(response.statusCode);
-        print(response.body);
-
         if(respo["error"] == false){
           _requestSuccessful = true;
           _isLoading = false;
           _isError =  false;
           _resMessage = "Account created successfuly";
+
+          Future.delayed( Duration(seconds: 3), (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen())
+            );
+          });
         }
         else {
           _requestSuccessful = false;
+          _resMessage = respo['message'];
           _isError = true;
           _isLoading = false;
         }
@@ -145,20 +150,27 @@ class AuthenticationProvider extends ChangeNotifier {
           String lastname = respo["data"]["lastName"];
           String userRole =  respo["data"]["userType"];
 
-          print(respo["data"]);
-          print(userRole);
+          // print(respo);
+          // print(userRole);
 
           CurrentUserProvider().saveToken(token);
           CurrentUserProvider().saveUsername(username);
           CurrentUserProvider().saveFirstname(firstname + " " + lastname);
           CurrentUserProvider().saveUserRole(userRole);
           // CurrentUserProvider().saveLastname(lastname);
+          
+          Future.delayed( Duration(seconds: 5), (){
+            Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => const LandingScreen())
+            );
+          });
 
         } else {
           _isLoading = false;
           _requestSuccessful = false;
           _isError = true;
-          _resMessage = "Login failed: ${respo['error']}";
+          _resMessage = "Login failed: ${respo['message']}";
         }
       } else {
         final res = json.decode(response.body);
@@ -166,7 +178,7 @@ class AuthenticationProvider extends ChangeNotifier {
         _isLoading = false;
         _requestSuccessful = false;
         _isError = true;
-        _resMessage = "Login failed: ${res['error']}";
+        _resMessage = "Login failed: ${res['message']}";
       }
     } on SocketException catch (e) {
       _isLoading = false;
