@@ -134,7 +134,7 @@ class AuthenticationProvider extends ChangeNotifier {
       final response = await http.post(Uri.parse(url), headers: headers, body: json.encode(body));
 
       final respo = json.decode(response.body);
-
+      // print(respo);
       if (response.statusCode == 200 || response.statusCode == 201) {
         _requestSuccessful = true;
         _isError = false;
@@ -149,19 +149,17 @@ class AuthenticationProvider extends ChangeNotifier {
           String firstname = respo["data"]["firstName"];
           String lastname = respo["data"]["lastName"];
           String userRole =  respo["data"]["userType"];
-
-          // print(respo);
-          // print(userRole);
+          String phone = respo["data"]["phone"];
 
           CurrentUserProvider().saveToken(token);
           CurrentUserProvider().saveUsername(username);
           CurrentUserProvider().saveFirstname(firstname + " " + lastname);
           CurrentUserProvider().saveUserRole(userRole);
-          // CurrentUserProvider().saveLastname(lastname);
+          CurrentUserProvider().savePhone(phone);
           
           Future.delayed( Duration(seconds: 5), (){
             Navigator.push(
-                context, 
+                context,
                 MaterialPageRoute(builder: (context) => const LandingScreen())
             );
           });

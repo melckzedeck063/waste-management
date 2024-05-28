@@ -10,12 +10,14 @@ class CurrentUserProvider extends ChangeNotifier {
   final String _username = '';
   final String _firstName = '';
   final String _lastName = '';
+  final String _phone = "";
 
   String get token => _token;
   String get userRole => _userRole;
   String get username => _username;
   String get firstName => _firstName;
   String get lastName => _lastName;
+  String get phone => _phone;
 
   Future<void> saveToken(String token) async {
     SharedPreferences prefs = await _pref;
@@ -25,6 +27,11 @@ class CurrentUserProvider extends ChangeNotifier {
   Future<void> saveUserRole(String role) async {
     SharedPreferences prefs = await _pref;
     await prefs.setString('role', role);
+  }
+
+  Future<void> savePhone(String phone) async {
+    SharedPreferences prefs = await _pref;
+    await prefs.setString('phone', phone);
   }
 
   Future<void> saveUsername(String username) async {
@@ -50,6 +57,11 @@ class CurrentUserProvider extends ChangeNotifier {
   Future<String> getUserRole() async {
     SharedPreferences prefs = await _pref;
     return prefs.getString('role') ?? '';
+  }
+
+  Future<String> getPhone() async {
+    SharedPreferences prefs = await _pref;
+    return prefs.getString('phone') ?? '';
   }
 
   Future<String> getUsername() async {

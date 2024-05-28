@@ -73,6 +73,7 @@ class _PendingRequestsState extends State<PendingRequests> {
                               bookedBy: booking.bookedBy,
                               latitude: booking.latitude,
                               longtude: booking.longtude,
+                              uuid: booking.uuid,
                             );
                           }
 

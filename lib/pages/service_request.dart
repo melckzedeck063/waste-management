@@ -644,17 +644,6 @@ class _ServiceRequestState extends State<ServiceRequest> {
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(builder: (context) => const LandingScreen())
-                      // );
-                      // print(selectedDate);
-                      // print(selectedWasteCategory);
-                      // print(currentLocation.latitude);
-                      // print(currentLocation.longitude.toString());
-                      // print(widget.arguments.serviceName);
-                      // print(widget.arguments.servicePhoto);
-                      // print(defaultPrice);
 
                       String serviceName = widget.arguments.serviceName;
                       String servicePhoto = widget.arguments.servicePhoto;

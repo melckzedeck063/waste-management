@@ -14,6 +14,7 @@ class RequestCard extends StatelessWidget {
   final dynamic bookedBy;
   final double latitude;
   final double longtude;
+  final String  uuid;
 
   const RequestCard({
     Key?key,
@@ -26,7 +27,8 @@ class RequestCard extends StatelessWidget {
     required this.servicePhoto,
     required this.bookedBy,
     required this.latitude,
-    required this.longtude
+    required this.longtude,
+    required this.uuid,
   }) : super(key: key);
 
   @override
@@ -95,7 +97,8 @@ class RequestCard extends StatelessWidget {
                      servicePhoto: servicePhoto,
                   latitude: latitude,
                   longtude: longtude,
-                  bookedBy: bookedBy
+                  bookedBy: bookedBy,
+                  uuid: uuid
                 ),
               ) )
           );

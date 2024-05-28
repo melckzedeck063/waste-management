@@ -158,16 +158,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       primaryColor: Colors.green[700],
                                       backgroundColor: Colors.white
                                   );
-
-                                  Future.delayed(
-                                      const Duration(seconds: 5), () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => const LandingScreen())
-                                    );
-                                  }
-                                  );
                                 }else {
                                   toastification.show(
                                       context: context,

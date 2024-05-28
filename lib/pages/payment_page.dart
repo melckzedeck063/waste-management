@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:manage_waste/pages/confirm_payment.dart';
 import 'package:manage_waste/pages/payment_procedures.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -192,7 +193,7 @@ class _PaymentPageState extends State<PaymentPage> {
                               onPressed: () {
                                 Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const PaymentProcedures())
+                                    MaterialPageRoute(builder: (context) => const ConfirmPayment())
                                 );
                               },
 
@@ -218,7 +219,7 @@ class _PaymentPageState extends State<PaymentPage> {
                               onPressed: () {
                                 Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const PaymentProcedures())
+                                    MaterialPageRoute(builder: (context) => const ConfirmPayment())
                                 );
                               },
 
@@ -244,7 +245,7 @@ class _PaymentPageState extends State<PaymentPage> {
                               onPressed: () {
                                 Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const PaymentProcedures())
+                                    MaterialPageRoute(builder: (context) => const ConfirmPayment())
                                 );
                               },
                               style: ElevatedButton.styleFrom(

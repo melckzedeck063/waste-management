@@ -53,6 +53,7 @@ dev_dependencies:
   location : ^6.0.1
   flutter_polyline_points : ^2.0.0
   google_maps_flutter: ^2.4.1
+  flutter_svg: ^1.0.3
 
 
   # The "flutter_lints" package below contains a set of recommended lints to

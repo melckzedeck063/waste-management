@@ -226,4 +226,166 @@ class BookingProvider extends ChangeNotifier{
 
   }
 
+
+  void initiatePaymment({
+    required String accountNumber,
+    required String amount,
+    required String provider,
+    required String currency,
+    required String externalId,
+    required BuildContext context
+  }) async{
+
+    String url =  "$RequestUrl/payments/checkout";
+
+    final body = {
+      "accountNumber": accountNumber,
+      "amount": amount,
+      "provider": provider,
+      "currency" : currency,
+      "externalId" : externalId,
+    };
+
+    final token = await CurrentUserProvider().getToken();
+
+    final Map<String,String> headers = {
+      "Content-Type":"application/json",
+      "Authorization" : "Bearer $token"
+    };
+
+    try {
+      http.Response response = await http.post(Uri.parse(url), headers: headers, body: json.encode(body));
+
+      final Map<String, dynamic> respo = json.decode(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> respo = json.decode(response.body);
+
+        if (respo["success"] == true) {
+          _requestSuccessful = true;
+          _isLoading = false;
+          _isError = false;
+          _resMessage = respo['message'];
+
+          Future.delayed(const Duration(seconds: 5),(){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyRequests())
+            );
+          });
+        } else {
+          _requestSuccessful = false;
+          _resMessage = respo['message'];
+          _isError = true;
+          _isLoading = false;
+        }
+      } else {
+        final String res = response.body;
+        print("response : $res");
+        _isLoading = false;
+        _requestSuccessful = false;
+        notifyListeners();
+      }
+    } on SocketException catch (e) {
+      _isLoading = false;
+      _resMessage = "Connection error";
+      print("Socket Exception : $e");
+    } on HttpException catch (e) {
+      _isLoading = false;
+      _resMessage = "Http Exception: $e";
+      print(_resMessage);
+    } on FormatException catch (e) {
+      _isLoading = false;
+      _resMessage = "Response format error $e";
+      print(_resMessage);
+    } catch (e) {
+      _isLoading = false;
+      _requestSuccessful = false;
+      _resMessage = "An unexpected error occurred: $e";
+      print(_resMessage);
+    }
+
+  }
+
+
+  void updateBookingStatus({
+    required String bookingUuid,
+    required String status,
+    required String message,
+
+    required BuildContext context
+  }) async{
+
+    String url =  "$RequestUrl/bookings/update-booking";
+
+    final body = {
+      "bookingUuid": bookingUuid,
+      "status": status,
+      "message": message,
+    };
+
+    final token = await CurrentUserProvider().getToken();
+
+    final Map<String,String> headers = {
+      "Content-Type":"application/json",
+      "Authorization" : "Bearer $token"
+    };
+
+    print(body);
+
+
+    try {
+      http.Response response = await http.put(Uri.parse(url), headers: headers, body: json.encode(body));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> respo = json.decode(response.body);
+
+        print(respo);
+        if (respo["error"] == false) {
+          _requestSuccessful = true;
+          _isLoading = false;
+          _isError = false;
+          _resMessage = respo['message'];
+
+          Future.delayed(const Duration(seconds: 5),(){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyRequests())
+            );
+          });
+        } else {
+          _requestSuccessful = false;
+          _resMessage = respo['message'];
+          _isError = true;
+          _isLoading = false;
+        }
+      } else {
+        final String res = response.body;
+        print("response : $res");
+        _isLoading = false;
+        _requestSuccessful = false;
+        notifyListeners();
+      }
+    } on SocketException catch (e) {
+      _isLoading = false;
+      _resMessage = "Connection error";
+      print("Socket Exception : $e");
+    } on HttpException catch (e) {
+      _isLoading = false;
+      _resMessage = "Http Exception: $e";
+      print(_resMessage);
+    } on FormatException catch (e) {
+      _isLoading = false;
+      _resMessage = "Response format error $e";
+      print(_resMessage);
+    } catch (e) {
+      _isLoading = false;
+      _requestSuccessful = false;
+      _resMessage = "An unexpected error occurred: $e";
+      print(_resMessage);
+    }
+
+  }
+
+
 }

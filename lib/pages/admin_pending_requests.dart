@@ -72,6 +72,7 @@ class _PendingRequestsState extends State<AdminPendingRequests> {
                                   bookedBy: booking.bookedBy,
                                   latitude: booking.latitude,
                                   longtude: booking.longtude,
+                                  uuid: booking.uuid,
 
                                 );
                               }
