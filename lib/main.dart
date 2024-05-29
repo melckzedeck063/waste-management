@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:manage_waste/api/firebase_api.dart';
 import 'package:manage_waste/pages/splash_screen.dart';
 import 'package:manage_waste/provider/authentication_provider.dart';
 import 'package:manage_waste/provider/booking_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
+final navigatorKey =  GlobalKey<NavigatorState>();
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp( name: "waste-manage", options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseApi().initNotifications();
   runApp(
     ChangeNotifierProvider(
       create : (context) => AuthenticationProvider(),

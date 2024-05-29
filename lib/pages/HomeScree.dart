@@ -9,6 +9,7 @@ import 'package:manage_waste/pages/profile_page.dart';
 import 'package:manage_waste/pages/requests_page.dart';
 import 'package:manage_waste/pages/settings_page.dart';
 import 'package:manage_waste/pages/terms_uses_page.dart';
+import 'package:manage_waste/pages/user_profile.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
 import 'package:manage_waste/utils/service_card.dart';
 import 'package:manage_waste/utils/welcome_banner.dart';
@@ -127,8 +128,8 @@ class HomeScreen extends StatefulWidget {
               ),
               onTap: (){
                 Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => ProfilePage())
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen())
                 );
               },
             ),
@@ -144,7 +145,7 @@ class HomeScreen extends StatefulWidget {
               ),
               onTap: (){
                 Navigator.push(
-                    context, 
+                    context,
                     MaterialPageRoute(builder: (context) => AboutUsPage())
                 );
               },
@@ -259,7 +260,7 @@ class HomeScreen extends StatefulWidget {
                       GestureDetector(
                         onTap: (){
                           Navigator.push(
-                              context, 
+                              context,
                             MaterialPageRoute(builder: (context) => NotificationScreen())
                           );
                         },
@@ -270,7 +271,7 @@ class HomeScreen extends StatefulWidget {
                               color: Colors.cyan[200],
                               borderRadius: BorderRadius.circular(30)
                           ),
-                        
+
                           child: const Icon(
                             Icons.notifications,
                             size: 30,

@@ -546,6 +546,8 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                 const SizedBox(height: 10),
 
                 if(showVisitButton)
+                  if(widget.arguments.status == "CONFIRMED")
+                    // if(widget.arguments.status == "RECEIVED")
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: ElevatedButton(
