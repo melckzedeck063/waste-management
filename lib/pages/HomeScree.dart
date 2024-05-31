@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:manage_waste/pages/about_us_page.dart';
+import 'package:manage_waste/pages/admin_pending_requests.dart';
 import 'package:manage_waste/pages/my_requests.dart';
 import 'package:manage_waste/pages/new_service.dart';
 import 'package:manage_waste/pages/notifications.dart';
+import 'package:manage_waste/pages/payment_intro.dart';
 import 'package:manage_waste/pages/privacy_page.dart';
 import 'package:manage_waste/pages/profile_page.dart';
 import 'package:manage_waste/pages/requests_page.dart';
@@ -33,12 +37,27 @@ class HomeScreen extends StatefulWidget {
   ];
 
   bool showAdminItems = false;
+  final PageController _pageController = PageController();
+  Timer? _timer;
+
+  void _startAutoScroll() {
+    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (_pageController.hasClients) {
+        int nextPage = (_pageController.page!.round() + 1) % 3;
+        _pageController.animateToPage(
+          nextPage,
+          duration: Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
 
   @override
   void initState() {
-    checkUserRole();
-
     super.initState();
+    checkUserRole();
+    _startAutoScroll();
   }
 
   void checkUserRole() async {
@@ -47,6 +66,13 @@ class HomeScreen extends StatefulWidget {
     setState(() {
       showAdminItems = (role == "ADMIN" || role == "SUPER_ADMIN");
     });
+  }
+
+  @override
+  void dispose(){
+    _pageController.dispose();
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -114,7 +140,7 @@ class HomeScreen extends StatefulWidget {
               ),
               ),
               onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AllRequests()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AdminPendingRequests()));
               },
             ),
             ListTile(
@@ -133,7 +159,23 @@ class HomeScreen extends StatefulWidget {
                 );
               },
             ),
-
+            if(!showAdminItems)
+              ListTile(
+                leading: const Icon(Icons.money,  color: Colors.white,),
+                title: const Text("Billing",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.white
+                  ),
+                ),
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PaymentIntroductionScreen())
+                  );
+                },
+              ),
             ListTile(
               leading: const Icon(Icons.info,  color: Colors.white,),
               title: const Text("About",
@@ -209,7 +251,7 @@ class HomeScreen extends StatefulWidget {
           children: [
             Container(
               // height: 140,
-              padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 8),
               decoration: BoxDecoration(
                   color: Colors.cyan[700],
                 borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20))
@@ -370,7 +412,7 @@ class HomeScreen extends StatefulWidget {
 
 
                         Container(
-                          height: 230,
+                          height: 245,
                           child: ListView.builder(
                         itemCount: (services.length / 2).ceil(),
                           itemBuilder: (context, index){
@@ -399,9 +441,28 @@ class HomeScreen extends StatefulWidget {
             const  SizedBox(height: 11,),
 
             Container(
-              height: 140,
+              height: 120,
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child:  IntroductionScreen()
+              child:  PageView(
+                controller: _pageController,
+                children:  const[
+                  WelcomeBanner(
+                    title: "Welcome to Waste Management App 1",
+                    description: "Work days are Monday, Wednesday and Saturday! For those who need services apart from those days youll have to pay an emergence fee",
+                    backgroundColor: Colors.teal,
+                  ),
+                  WelcomeBanner(
+                    title: "Welcome to Waste Management App 2",
+                    description: "Work days are Monday, Wednesday and Saturday! For those who need services apart from those days youll have to pay an emergence fee",
+                    backgroundColor: Colors.green,
+                  ),
+                  WelcomeBanner(
+                    title: "Welcome to Waste Management App 3",
+                    description: "Work days are Monday, Wednesday and Saturday! For those who need services apart from those days youll have to pay an emergence fee",
+                    backgroundColor: Colors.cyan,
+                  )
+                ],
+              )
             ),
 
             const  SizedBox(height: 6,),

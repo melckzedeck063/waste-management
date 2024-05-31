@@ -15,103 +15,116 @@ class _PendingRequestsState extends State<PendingRequests> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
-            child: Text("Pending Requests",
-             style: TextStyle(
-               fontSize: 18,
-               fontWeight: FontWeight.bold,
-               color: Colors.grey[700]
-             ),
+    return Scaffold(
+        backgroundColor: Colors.grey[200],
+        appBar: AppBar(
+          backgroundColor: Colors.cyan[700],
+
+          automaticallyImplyLeading: false,
+          title: const Text('My Requests',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Colors.white
             ),
           ),
 
-          FutureBuilder<BookingModel>(
-          future: BookingProvider().getMyBookings(),
-            builder: (context,snapshot){
-            if(snapshot.connectionState == ConnectionState.waiting){
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: CupertinoColors.activeGreen,
-                ),
-              );
-            }
-            else if(snapshot.hasError){
-              return Center(
-                child: Text("Error : ${snapshot.error}",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.red[300]
-                ),
-                ),
-              );
-            }
-            else if(snapshot.hasData && snapshot.data != null){
-              final data =  snapshot.data!.content;
-              // print(data);
-              if(data.isNotEmpty){
-                return   Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 6),
-
-                      child: ListView.builder(
-                          itemCount: data.length,
-                          itemBuilder: (context, index) {
-                            final booking  = data[index];
-                            return  RequestCard(
-                              title: booking.serviceName,
-                              orderNo: booking.uuid.substring(0,6).toUpperCase(),
-                              status: booking.status,
-                              date: booking.createdAt.toString().substring(0,20),
-                              pickupdate: booking.pickupDate,
-                              wasteType: booking.wasteType,
-                              servicePhoto: booking.servicePhoto,
-                              bookedBy: booking.bookedBy,
-                              latitude: booking.latitude,
-                              longtude: booking.longtude,
-                              uuid: booking.uuid,
-                            );
-                          }
-
-                      ),
-                    )
-                );
-              }
-              else {
-                return  Center(
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 190),
-                    child: Text(
-                      "No booking data found",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 20,
-                        color: Colors.red[300]
-                      ),
-                    ),
+        ),
+        body: Container(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: Text("Pending Requests",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[700]
                   ),
-                );
-              }
-            }
-            else {
-              return const Center(
-                child: Text(
-                  "No booking data found",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                 ),
-              );
-            }
-            }
+              ),
+
+              FutureBuilder<BookingModel>(
+                  future: BookingProvider().getMyBookings(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: CupertinoColors.activeGreen,
+                        ),
+                      );
+                    }
+                    else if (snapshot.hasError) {
+                      return Center(
+                        child: Text("Error : ${snapshot.error}",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.red[300]
+                          ),
+                        ),
+                      );
+                    }
+                    else if (snapshot.hasData && snapshot.data != null) {
+                      final data = snapshot.data!.content;
+                      // print(data);
+                      if (data.isNotEmpty) {
+                        return Container(
+                          padding: EdgeInsets.symmetric(horizontal: 6),
+                          child: ListView.builder(
+                            itemCount: data.length,
+                            itemBuilder: (context, index) {
+                              final booking = data[index];
+                              return RequestCard(
+                                title: booking.serviceName,
+                                orderNo: booking.uuid.substring(0, 6).toUpperCase(),
+                                status: booking.status,
+                                date: booking.createdAt.toString().substring(0, 20),
+                                pickupdate: booking.pickupDate,
+                                wasteType: booking.wasteType,
+                                servicePhoto: booking.servicePhoto,
+                                bookedBy: booking.bookedBy,
+                                latitude: booking.latitude,
+                                longtude: booking.longtude,
+                                uuid: booking.uuid,
+                              );
+                            },
+                          ),
+                        );
+                      }
+                      else {
+                        return Center(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 190),
+                            child: Text(
+                              "No booking data found",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 20,
+                                  color: Colors.red[300]
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                    else {
+                      return const Center(
+                        child: Text(
+                          "No booking data found",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 18),
+                        ),
+                      );
+                    }
+                  }
+              ),
+
+
+              const SizedBox(height: 10,)
+            ],
           ),
 
-
-
-          const SizedBox(height: 10,)
-        ],
-      ),
+        )
     );
   }
 }

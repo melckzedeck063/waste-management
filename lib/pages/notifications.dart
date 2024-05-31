@@ -21,7 +21,7 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final message  =  ModalRoute.of(context)!.settings.arguments as RemoteMessage;
+    // final message  =  ModalRoute.of(context)!.settings.arguments as RemoteMessage;
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
@@ -48,8 +48,8 @@ class NotificationScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final notification = notifications[index];
           return NotificationItem(
-            title: message.notification!.title.toString(),
-            message: message.notification!.body.toString(),
+            title: notification['title'],
+            message: notification['message'],
             time: notification['time'],
           );
         },

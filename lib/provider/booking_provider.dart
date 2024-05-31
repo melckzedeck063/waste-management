@@ -247,6 +247,8 @@ class BookingProvider extends ChangeNotifier{
     };
 
     final token = await CurrentUserProvider().getToken();
+    final FCMtoken =  await CurrentUserProvider().getNotificationToken();
+
 
     final Map<String,String> headers = {
       "Content-Type":"application/json",
@@ -267,6 +269,7 @@ class BookingProvider extends ChangeNotifier{
           _isError = false;
           _resMessage = respo['message'];
 
+          sendNotification(tittle: "Manage Waste", message: _resMessage, FCMtoken: FCMtoken, context: context);
           Future.delayed(const Duration(seconds: 5),(){
             Navigator.push(
                 context,
@@ -325,6 +328,7 @@ class BookingProvider extends ChangeNotifier{
     };
 
     final token = await CurrentUserProvider().getToken();
+    final FCMtoken =  await CurrentUserProvider().getNotificationToken();
 
     final Map<String,String> headers = {
       "Content-Type":"application/json",
@@ -336,6 +340,87 @@ class BookingProvider extends ChangeNotifier{
 
     try {
       http.Response response = await http.put(Uri.parse(url), headers: headers, body: json.encode(body));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> respo = json.decode(response.body);
+
+        print(respo);
+        if (respo["error"] == false) {
+          _requestSuccessful = true;
+          _isLoading = false;
+          _isError = false;
+          _resMessage = respo['message'];
+
+          sendNotification(tittle: "Manage Waste", message: _resMessage, FCMtoken: FCMtoken, context: context);
+
+          Future.delayed(const Duration(seconds: 5),(){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MyRequests())
+            );
+          });
+        } else {
+          _requestSuccessful = false;
+          _resMessage = respo['message'];
+          _isError = true;
+          _isLoading = false;
+        }
+      } else {
+        final String res = response.body;
+        print("response : $res");
+        _isLoading = false;
+        _requestSuccessful = false;
+        notifyListeners();
+      }
+    } on SocketException catch (e) {
+      _isLoading = false;
+      _resMessage = "Connection error";
+      print("Socket Exception : $e");
+    } on HttpException catch (e) {
+      _isLoading = false;
+      _resMessage = "Http Exception: $e";
+      print(_resMessage);
+    } on FormatException catch (e) {
+      _isLoading = false;
+      _resMessage = "Response format error $e";
+      print(_resMessage);
+    } catch (e) {
+      _isLoading = false;
+      _requestSuccessful = false;
+      _resMessage = "An unexpected error occurred: $e";
+      print(_resMessage);
+    }
+
+  }
+
+  void sendNotification({
+    required String tittle,
+    required String message,
+    required String FCMtoken,
+
+    required BuildContext context
+  }) async{
+
+    String url =  "$RequestUrl/notifications/send";
+
+    final body = {
+      "tittle": tittle,
+      "token": FCMtoken,
+      "message": message,
+    };
+
+    final token = await CurrentUserProvider().getToken();
+
+    final Map<String,String> headers = {
+      "Content-Type":"application/json",
+      "Authorization" : "Bearer $token"
+    };
+
+    print(body);
+
+
+    try {
+      http.Response response = await http.post(Uri.parse(url), headers: headers, body: json.encode(body));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> respo = json.decode(response.body);

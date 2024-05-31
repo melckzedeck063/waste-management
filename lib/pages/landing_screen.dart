@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:manage_waste/pages/HomeScree.dart';
+import 'package:manage_waste/pages/feedback_screen.dart';
 import 'package:manage_waste/pages/history_screen.dart';
+import 'package:manage_waste/pages/payment_intro.dart';
+import 'package:manage_waste/pages/pending_requests.dart';
 import 'package:manage_waste/pages/pricing_page.dart';
 import 'package:manage_waste/pages/schedule_screen.dart';
 import 'package:manage_waste/pages/updates_page.dart';
@@ -20,8 +23,8 @@ class _LandingScreenState extends State<LandingScreen> {
   final List<Widget> screens = [
     const HomeScreen(),
     const UpdatesScreen(),
-    const HistoryScreen(),
-    const  PricingPages()
+    const PendingRequests(),
+    FeedbackScreen()
   ];
 
   void changeScreen(int index){
@@ -53,8 +56,8 @@ class _LandingScreenState extends State<LandingScreen> {
             label: "My Requests",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.money),
-            label: "Pricing",
+            icon: Icon(Icons.feedback),
+            label: "Feedback",
           ),
         ],
         currentIndex: selectedScreen,

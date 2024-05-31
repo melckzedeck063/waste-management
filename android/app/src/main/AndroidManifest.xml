@@ -51,6 +51,9 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+        <meta-data
+            android:name="com.example.manage_waste.NOTIFICATION_CHANNEL_ID"
+            android:value="manage_waste" />
 <!--        <service-->
 <!--            android:name="com.google.firebase.messaging.FirebaseMessagingService"-->
 <!--            android:exported="true"-->

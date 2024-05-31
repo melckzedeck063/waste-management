@@ -11,6 +11,7 @@ class CurrentUserProvider extends ChangeNotifier {
   final String _firstName = '';
   final String _lastName = '';
   final String _phone = "";
+  final String _notificationToken = "";
 
   String get token => _token;
   String get userRole => _userRole;
@@ -18,6 +19,7 @@ class CurrentUserProvider extends ChangeNotifier {
   String get firstName => _firstName;
   String get lastName => _lastName;
   String get phone => _phone;
+  String get notificationToken => _notificationToken;
 
   Future<void> saveToken(String token) async {
     SharedPreferences prefs = await _pref;
@@ -47,6 +49,17 @@ class CurrentUserProvider extends ChangeNotifier {
   Future<void> saveLastname(String lastName) async {
     SharedPreferences prefs = await _pref;
     await prefs.setString('lastname', lastName);
+  }
+
+  Future<void> saveNotificationToken(String notificationToken) async {
+    SharedPreferences prefs = await _pref;
+    await prefs.setString('notificationToken', notificationToken);
+    print("SAVED TOKEN TO PREF : ${notificationToken}" );
+  }
+
+  Future<String> getNotificationToken() async {
+    SharedPreferences prefs = await _pref;
+    return prefs.getString('notificationToken') ?? '';
   }
 
   Future<String> getToken() async {
