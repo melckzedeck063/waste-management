@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:manage_waste/pages/HomeScree.dart';
 import 'package:manage_waste/pages/feedback_screen.dart';
+import 'package:manage_waste/pages/feedbacks_page.dart';
 import 'package:manage_waste/pages/history_screen.dart';
 import 'package:manage_waste/pages/payment_intro.dart';
 import 'package:manage_waste/pages/pending_requests.dart';
@@ -24,7 +25,7 @@ class _LandingScreenState extends State<LandingScreen> {
     const HomeScreen(),
     const UpdatesScreen(),
     const PendingRequests(),
-    FeedbackScreen()
+    FeedbackPage()
   ];
 
   void changeScreen(int index){
@@ -57,7 +58,7 @@ class _LandingScreenState extends State<LandingScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.feedback),
-            label: "Feedback",
+            label: "Feedbacks",
           ),
         ],
         currentIndex: selectedScreen,

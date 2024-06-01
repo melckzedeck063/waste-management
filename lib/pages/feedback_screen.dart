@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:manage_waste/provider/feedbacks_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
+
+import '../provider/user_details_provider.dart';
 
 class FeedbackScreen extends StatefulWidget {
   @override
@@ -7,6 +12,10 @@ class FeedbackScreen extends StatefulWidget {
 }
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _feedbackController  = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   String _name = '';
   String _email = '';
@@ -15,10 +24,26 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   bool _isSubmitting = false;
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.cyan[700],
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
           title: const Text('Feedback Screen',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -26,34 +51,151 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 color: Colors.white
             ),
           ),
-        automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height - AppBar().preferredSize.height - MediaQuery.of(context).padding.top,
-          ),
-          child: IntrinsicHeight(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const SizedBox(height: 40,),
-                  _buildNameField(),
-                  SizedBox(height: 16),
-                  _buildEmailField(),
-                  SizedBox(height: 16),
-                  _buildRatingBar(),
-                  SizedBox(height: 16),
-                  _buildFeedbackField(),
-                  SizedBox(height: 20),
-                  _buildSubmitButton(),
-                ],
+      body: Consumer<FeedbackProvider>(
+        builder: (context, feedback,child) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery
+                    .of(context)
+                    .size
+                    .height - AppBar().preferredSize.height - MediaQuery
+                    .of(context)
+                    .padding
+                    .top,
+              ),
+              child: IntrinsicHeight(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 40,),
+                      FutureBuilder<String>(
+                        future: CurrentUserProvider().getFirstName(), // Future method to get user's first name from shared preferences
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            // Show a loading indicator while waiting for the data
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text(
+                              'Error: ${snapshot.error}',
+                              style: TextStyle(color: Colors.red),
+                            );
+                          } else {
+                            _nameController.text = snapshot.data!;
+                            // Display the user's first name if data is retrieved successfully
+                            return TextFormField(
+                              controller: _nameController,
+                              decoration: const InputDecoration(
+                                labelText: 'Name',
+                                border: OutlineInputBorder(),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      SizedBox(height: 16),
+                    FutureBuilder<String>(
+                      future: CurrentUserProvider().getUsername(), // Future method to get user's first name from shared preferences
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          // Show a loading indicator while waiting for the data
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text(
+                            'Error: ${snapshot.error}',
+                            style: TextStyle(color: Colors.red),
+                          );
+                        } else {
+                          _emailController.text = snapshot.data!;
+                          // Display the user's first name if data is retrieved successfully
+                          return TextFormField(
+                            controller: _emailController,
+                            decoration: const InputDecoration(
+                              labelText: 'Name',
+                              border: OutlineInputBorder(),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email';
+                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                                return 'Please enter a valid email';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _name = snapshot.data!;
+                            },
+                          );
+                        }
+                      },
+                    ),
+                      SizedBox(height: 16),
+                      _buildRatingBar(),
+                      SizedBox(height: 16),
+                      _buildFeedbackField(),
+                      SizedBox(height: 20),
+
+                  Container(
+                    width: 320,
+                    child: ElevatedButton(
+                      onPressed: (){
+                        if (_formKey.currentState!.validate()) {
+                          _email = _emailController.text.trim();
+                          _name = _nameController.text.trim();
+                          _feedback = _feedbackController.text.trim();
+
+                          Future.delayed(Duration(seconds: 3), (){
+                            feedback.createFeedback(message: _feedback, ratings: _rating, context: context);
+
+                            if(feedback.requestSuccessful == true){
+                              toastification.show(
+                                  context: context,
+                                  style: ToastificationStyle.fillColored,
+                                  type: ToastificationType.success,
+                                  description: RichText(text:  TextSpan(text: feedback.resMessage)),
+                                  alignment: Alignment.bottomLeft,
+                                  autoCloseDuration: const Duration(seconds: 4),
+                                  icon: const Icon(Icons.check_circle),
+                                  primaryColor: Colors.green[700],
+                                  backgroundColor: Colors.white
+                              );
+                            }else {
+                              toastification.show(
+                                  context: context,
+                                  style: ToastificationStyle.fillColored,
+                                  type: ToastificationType.error,
+                                  description: RichText(text:   TextSpan(text: feedback.resMessage)),
+                                  alignment: Alignment.bottomCenter,
+                                  autoCloseDuration: const Duration(seconds: 4),
+                                  icon: const Icon(Icons.cancel, color: Colors.white,),
+                                  primaryColor: Colors.red[500],
+                                  backgroundColor: Colors.white
+                              );
+
+                            }
+
+                          });
+                        }
+                      },
+                      child: _isSubmitting ? CircularProgressIndicator() : Text('Submit', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          // textStyle: const TextStyle(fontSize: 18, color: Colors.white),
+                          backgroundColor: Colors.cyan[700]
+                      ),
+                    ),
+                  )
+
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        }
       ),
     );
   }
@@ -123,6 +265,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   Widget _buildFeedbackField() {
     return TextFormField(
+      controller: _feedbackController,
       maxLines: 5,
       decoration: InputDecoration(
         labelText: 'Feedback',
@@ -140,43 +283,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     );
   }
 
-  Widget _buildSubmitButton() {
-    return Container(
-      width: 320,
-      child: ElevatedButton(
-        onPressed: _isSubmitting ? null : _submit,
-        child: _isSubmitting ? CircularProgressIndicator() : Text('Submit', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
-        style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            // textStyle: const TextStyle(fontSize: 18, color: Colors.white),
-            backgroundColor: Colors.cyan[700]
-        ),
-      ),
-    );
-  }
 
-  void _submit() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      setState(() {
-        _isSubmitting = true;
-      });
 
-      // Simulate a network request
-      Future.delayed(Duration(seconds: 2), () {
-        setState(() {
-          _isSubmitting = false;
-        });
-        // Print form data to console
-        print('Name: $_name');
-        print('Email: $_email');
-        print('Rating: $_rating');
-        print('Feedback: $_feedback');
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Feedback submitted!')),
-        );
-      });
-    }
-  }
 }

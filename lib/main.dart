@@ -3,6 +3,7 @@ import 'package:manage_waste/api/firebase_api.dart';
 import 'package:manage_waste/pages/splash_screen.dart';
 import 'package:manage_waste/provider/authentication_provider.dart';
 import 'package:manage_waste/provider/booking_provider.dart';
+import 'package:manage_waste/provider/feedbacks_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
     return  MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
-          ChangeNotifierProvider(create: (_) => BookingProvider())
+          ChangeNotifierProvider(create: (_) => BookingProvider()),
+          ChangeNotifierProvider(create: (_) => FeedbackProvider())
         ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

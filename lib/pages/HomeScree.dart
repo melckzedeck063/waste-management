@@ -4,14 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:manage_waste/pages/about_us_page.dart';
 import 'package:manage_waste/pages/admin_pending_requests.dart';
-import 'package:manage_waste/pages/my_requests.dart';
-import 'package:manage_waste/pages/new_service.dart';
 import 'package:manage_waste/pages/notifications.dart';
 import 'package:manage_waste/pages/payment_intro.dart';
 import 'package:manage_waste/pages/privacy_page.dart';
-import 'package:manage_waste/pages/profile_page.dart';
-import 'package:manage_waste/pages/requests_page.dart';
-import 'package:manage_waste/pages/settings_page.dart';
 import 'package:manage_waste/pages/terms_uses_page.dart';
 import 'package:manage_waste/pages/user_profile.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
@@ -81,6 +76,14 @@ class HomeScreen extends StatefulWidget {
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.cyan[700],
+          actions: [
+            IconButton(
+              icon:  Icon(Icons.logout, color: Colors.orange[500]),
+              onPressed: () {
+                CurrentUserProvider().logoutUser(context);
+              },
+            )
+          ],
           iconTheme: const IconThemeData(color: Colors.white)
       ),
       drawer: Drawer(
@@ -298,29 +301,7 @@ class HomeScreen extends StatefulWidget {
                           )
                         ],
                       ),
-
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.push(
-                              context,
-                            MaterialPageRoute(builder: (context) => NotificationScreen())
-                          );
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              color: Colors.cyan[200],
-                              borderRadius: BorderRadius.circular(30)
-                          ),
-
-                          child: const Icon(
-                            Icons.notifications,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
+                      
                     ],
                   ),
 
