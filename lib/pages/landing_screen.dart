@@ -7,6 +7,7 @@ import 'package:manage_waste/pages/payment_intro.dart';
 import 'package:manage_waste/pages/pending_requests.dart';
 import 'package:manage_waste/pages/pricing_page.dart';
 import 'package:manage_waste/pages/schedule_screen.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:manage_waste/pages/updates_page.dart';
 
 
@@ -20,6 +21,7 @@ class LandingScreen extends StatefulWidget {
 class _LandingScreenState extends State<LandingScreen> {
 
   int selectedScreen = 0;
+  bool _locationServiceEnabled = false;
 
   final List<Widget> screens = [
     const HomeScreen(),
@@ -32,6 +34,32 @@ class _LandingScreenState extends State<LandingScreen> {
     setState(() {
       selectedScreen = index;
     });
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _checkLocationService();
+  }
+
+  Future<void> _checkLocationService() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await Geolocator.openLocationSettings();
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    setState(() {
+      _locationServiceEnabled = serviceEnabled && permission == LocationPermission.always;
+    });
+    if (_locationServiceEnabled) {
+      // Navigate to the next screen
+      // Example: Navigator.push(context, MaterialPageRoute(builder: (context) => NextScreen()));
+    }
   }
 
   @override

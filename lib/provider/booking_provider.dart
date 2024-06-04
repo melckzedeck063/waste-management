@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:manage_waste/models/bookings_model.dart';
 import 'package:manage_waste/pages/my_requests.dart';
+import 'package:manage_waste/pages/pending_requests.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
 
 import '../config/URLS.dart';
@@ -75,7 +76,7 @@ class BookingProvider extends ChangeNotifier{
           Future.delayed(const Duration(seconds: 5),(){
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MyRequests())
+                MaterialPageRoute(builder: (context) => const PendingRequests())
             );
           });
         } else {

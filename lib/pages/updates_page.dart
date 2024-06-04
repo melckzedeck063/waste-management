@@ -13,10 +13,10 @@ class UpdatesScreen extends StatefulWidget {
 class _UpdatesScreenState extends State<UpdatesScreen> {
 
   final List<Map<String,String>> news = [
-    {"title": "Disease Outbreak", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated",},
-    {"title": "Huge Discount", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated",},
-    {"title": "Schedule Changes", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated",},
-    {"title": "Payment Changes", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated",}
+    {"title": "Why Waste management is important", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated","link" : "https://blog.cleanhub.com/what-is-waste-management#what-is-it"},
+    {"title": "Importance of environmental awareness", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated","link"  : "https://education.nationalgeographic.org/resource/conserving-earth/"},
+    {"title": "Tools fro waste collection", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated", "link" : "https://images.app.goo.gl/ZY9FEYVdnPQnSijm9"},
+    {"title": "Payment Changes", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated","link" : "https://images.app.goo.gl/ZY9FEYVdnPQnSijm9"}
   ];
 
   @override
@@ -51,7 +51,8 @@ class _UpdatesScreenState extends State<UpdatesScreen> {
                           itemBuilder: (context, index) =>
                               UpdateCard(
                                   title: news[index]["title"] ?? "",
-                                  description: news[index]["description"] ?? ""
+                                  description: news[index]["description"] ?? "",
+                                pageUrl: news[index]["link"] ?? "",
                               )
                       ),
                     )

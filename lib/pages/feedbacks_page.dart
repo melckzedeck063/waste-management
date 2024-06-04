@@ -29,15 +29,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.cyan[700],
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-        ),
+        automaticallyImplyLeading: false,
         title: const Text(
           'User Feedback',
           style: TextStyle(
