@@ -42,7 +42,7 @@ class _PendingRequestsState extends State<AdminPendingRequests> {
             children: [
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
-                child: Text("Pending Requests",
+                child: Text("Requests Received",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

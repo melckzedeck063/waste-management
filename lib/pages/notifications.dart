@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:manage_waste/models/notifications_model.dart';
+
+import '../provider/feedbacks_provider.dart';
 
 class NotificationScreen extends StatelessWidget {
   final List<Map<String, dynamic>> notifications = [
@@ -43,15 +47,67 @@ class NotificationScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          final notification = notifications[index];
-          return NotificationItem(
-            title: notification['title'],
-            message: notification['message'],
-            time: notification['time'],
-          );
+      body: FutureBuilder<NotificationsModel>(
+        future: FeedbackProvider().getAllMessages(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: CupertinoColors.activeGreen,
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                "Error: ${snapshot.error}",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.red[300],
+                ),
+              ),
+            );
+          } else if (snapshot.hasData && snapshot.data != null) {
+            final data = snapshot.data!.content;
+            if (data.isNotEmpty) {
+              return ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                itemCount: data.length,
+                itemBuilder: (context, index) {
+                  final notification = data[index];
+                  return NotificationItem(
+                      title: notification.title,
+                      message: notification.message,
+                      time: notification.createdAt.toString()
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 190),
+                  child: Text(
+                    "No notification found",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                      color: Colors.red[300],
+                    ),
+                  ),
+                ),
+              );
+            }
+          } else {
+            return const Center(
+              child: Text(
+                "No notification  data found",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                ),
+              ),
+            );
+          }
         },
       ),
     );
@@ -72,8 +128,8 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15,vertical: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 3),
+      margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 4,vertical: 3),
       decoration: BoxDecoration(
           color: Colors.grey[200],
           borderRadius: BorderRadius.circular(12)
@@ -84,7 +140,7 @@ class NotificationItem extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Text(message),
-        trailing: Text(time),
+        trailing: Text(time.substring(11,16)),
         onTap: () {
           // Handle tapping on a notification item
         },

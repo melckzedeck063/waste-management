@@ -158,7 +158,7 @@ class AuthenticationProvider extends ChangeNotifier {
           CurrentUserProvider().saveUserRole(userRole);
           CurrentUserProvider().savePhone(phone);
           
-          Future.delayed( Duration(seconds: 5), (){
+          Future.delayed( Duration(seconds: 6), (){
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const LandingScreen())

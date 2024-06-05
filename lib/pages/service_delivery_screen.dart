@@ -562,6 +562,8 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                                     latitude: widget.arguments.latitude,
                                     longtude: widget.arguments.longtude,
                                     bookedBy: widget.arguments.bookedBy,
+                                    status: widget.arguments.status,
+                                    uuid: widget.arguments.uuid
 
                                   ),
                                 ))
@@ -600,7 +602,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
 
                             book.updateBookingStatus(bookingUuid: uuid, status: status, message: message, context: context);
 
-                            Future.delayed(Duration(seconds: 3), (){
+                            Future.delayed(Duration(seconds: 5), (){
                               if(book.requestSuccessful == true) {
                                 toastification.show(
                                     context: context,
@@ -660,7 +662,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
 
                             book.updateBookingStatus(bookingUuid: uuid, status: status, message: message, context: context);
 
-                            Future.delayed(Duration(seconds: 3), (){
+                            Future.delayed(Duration(seconds: 5), (){
                               if(book.requestSuccessful == true) {
                                 toastification.show(
                                     context: context,

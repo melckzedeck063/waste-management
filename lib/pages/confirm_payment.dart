@@ -57,7 +57,7 @@ class ConfirmPaymentState extends State<ConfirmPayment> {
               children: [
                 const Center(
                   child: Text(
-                    'Payment Information',
+                    'Monthly Service Payment',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,

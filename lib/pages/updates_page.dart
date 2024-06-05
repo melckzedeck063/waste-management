@@ -13,10 +13,9 @@ class UpdatesScreen extends StatefulWidget {
 class _UpdatesScreenState extends State<UpdatesScreen> {
 
   final List<Map<String,String>> news = [
-    {"title": "Why Waste management is important", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated","link" : "https://blog.cleanhub.com/what-is-waste-management#what-is-it"},
-    {"title": "Importance of environmental awareness", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated","link"  : "https://education.nationalgeographic.org/resource/conserving-earth/"},
-    {"title": "Tools fro waste collection", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated", "link" : "https://images.app.goo.gl/ZY9FEYVdnPQnSijm9"},
-    {"title": "Payment Changes", "description": "To display the whole description when the card is clicked, you can maintain the card's state to toggle between showing the truncated and full description. Here's the updated","link" : "https://images.app.goo.gl/ZY9FEYVdnPQnSijm9"}
+    {"title": "Importance of environmental awareness", "description": "Environmental awareness refers to the understanding and knowledge of the nature environment and impact of human activities on it","link"  : "https://education.nationalgeographic.org/resource/conserving-earth/"},
+    {"title": "Tools fro waste collection", "description": "Several ways and tools used for waste collection  ensure environment is kept safe in markets and different places", "link" : "https://images.app.goo.gl/ZY9FEYVdnPQnSijm9"},
+    {"title": "Ways To Reduce Waste", "description": "Ways used to reduce waste at home and business areas in order to keep our environment safe and reduce environmental polution","link" : "https://images.app.goo.gl/ZY9FEYVdnPQnSijm9"}
   ];
 
   @override

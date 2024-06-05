@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               auth.loginUser(username: username, password: password, context: context);
                               print(auth.isError);
 
-                              Future.delayed(Duration(seconds: 3), (){
+                              Future.delayed(Duration(seconds: 5), (){
 
                                 if(auth.requestSuccessful == true){
                                   toastification.show(

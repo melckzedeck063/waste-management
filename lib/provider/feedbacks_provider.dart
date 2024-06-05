@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:manage_waste/models/bookings_model.dart';
 import 'package:manage_waste/models/feedbacks_model.dart';
+import 'package:manage_waste/models/notifications_model.dart';
 import 'package:manage_waste/pages/my_requests.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
 
@@ -461,6 +462,63 @@ class FeedbackProvider extends ChangeNotifier{
       _resMessage = "An unexpected error occurred: $e";
       print(_resMessage);
     }
+
+  }
+
+
+  Future<NotificationsModel> getAllMessages()async{
+    _isLoading = true;
+    notifyListeners();
+
+    final token =  await CurrentUserProvider().getToken();
+
+    String url =  "$RequestUrl/notifications/mine";
+
+    final Map<String,String> headers = {
+      "Content-Type":  "application/json",
+      "Authorization" : "Bearer $token"
+    };
+
+    try{
+
+      final request =  await http.get(Uri.parse(url), headers: headers);
+
+      if(request.statusCode == 200){
+        final decodedData =  json.decode(request.body);
+
+        // print(decodedData);
+
+        if(decodedData != null){
+          final notificatiomModel =  NotificationsModel.fromJson(decodedData);
+          _isLoading = false;
+          _resMessage = "data found";
+          return notificatiomModel;
+        }
+      }
+
+    } on SocketException catch (e) {
+      _isLoading = false;
+      _resMessage = "Check Your connection and try again";
+      print("$_resMessage :  $e");
+    } on HttpException catch(e) {
+      _isLoading = false;
+      _resMessage = "Http exception : $e";
+
+      print(_resMessage);
+    } on FormatException catch (e) {
+      _isLoading = false;
+      _resMessage = "Format Exception : $e";
+      print(_resMessage);
+    } catch (e){
+      _isLoading  = false;
+      _resMessage = "Unknown error occured $e";
+
+      print(_resMessage);
+    }
+
+    _isLoading = false;
+    notifyListeners();
+    return NotificationsModel(content: []);
 
   }
 

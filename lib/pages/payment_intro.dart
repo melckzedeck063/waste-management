@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manage_waste/pages/confirm_payment.dart';
+import 'package:manage_waste/pages/payment_page2.dart';
 
 class PaymentIntroductionScreen extends StatelessWidget {
   const PaymentIntroductionScreen({Key? key}) : super(key: key);
@@ -47,6 +48,7 @@ class PaymentIntroductionScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
+
             Center(
               child: ElevatedButton(
                 onPressed: () {
@@ -56,14 +58,35 @@ class PaymentIntroductionScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const ConfirmPayment()),
                   );
                 },
-                child: const Text('Pay with AzamPay', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  textStyle: const TextStyle(fontSize: 18, color: Colors.white),
-                  backgroundColor: Colors.cyan[700]
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 18, color: Colors.white),
+                    backgroundColor: Colors.cyan[700]
                 ),
+                child: const Text('Monthly Payment', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
               ),
             ),
+
+            const SizedBox(height: 15,),
+
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  // Navigate to the payment page
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ConfirmServicePayment()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 18, color: Colors.white),
+                    backgroundColor: Colors.cyan[900]
+                ),
+                child: const Text('Emergency Service Payment', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
+              ),
+            ),
+
           ],
         ),
       ),
