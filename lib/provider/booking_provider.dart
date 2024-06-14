@@ -9,6 +9,8 @@ import 'package:manage_waste/models/bookings_model.dart';
 import 'package:manage_waste/pages/my_requests.dart';
 import 'package:manage_waste/pages/pending_requests.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
+import 'package:manage_waste/pages/HomeScree.dart';
+import 'package:manage_waste/pages/admin_pending_requests.dart';
 
 import '../config/URLS.dart';
 
@@ -274,12 +276,12 @@ class BookingProvider extends ChangeNotifier{
           Future.delayed(const Duration(seconds: 5),(){
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const PendingRequests())
+                MaterialPageRoute(builder: (context) => const HomeScreen())
             );
           });
         } else {
           _requestSuccessful = false;
-          _resMessage = respo['message'];
+          _resMessage = "Request failed! try again later";
           _isError = true;
           _isLoading = false;
         }
@@ -287,6 +289,7 @@ class BookingProvider extends ChangeNotifier{
         final String res = response.body;
         print("response : $res");
         _isLoading = false;
+        _resMessage = "Request failed! try again later";
         _requestSuccessful = false;
         notifyListeners();
       }
@@ -355,10 +358,10 @@ class BookingProvider extends ChangeNotifier{
           sendNotification(tittle: "Manage Waste", message: _resMessage, FCMtoken: FCMtoken, context: context);
 
           Future.delayed(const Duration(seconds: 5),(){
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(builder: (context) => const PendingRequests())
-            // );
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen())
+            );
           });
         } else {
           _requestSuccessful = false;
@@ -524,7 +527,7 @@ class BookingProvider extends ChangeNotifier{
             updateBookingStatus(bookingUuid: bookingUuid, status: status, message: "Booking accepted successful", context: context);
             // Navigator.push(
             //     context,
-            //     MaterialPageRoute(builder: (context) => const PendingRequests())
+            //     MaterialPageRoute(builder: (context) => const AdminPendingRequests())
             // );
           });
         } else {

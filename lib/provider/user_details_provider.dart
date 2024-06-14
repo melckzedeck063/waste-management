@@ -97,15 +97,17 @@ class CurrentUserProvider extends ChangeNotifier {
     return prefs.getString('firstname') ?? '';
   }
 
-  void logoutUser(BuildContext context) async{
+  void logoutUser(BuildContext context) async {
     final value = await _pref;
 
     value.clear();
 
-    Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen())
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (Route<dynamic> route) => false,  // This predicate removes all the previous routes.
     );
   }
+
 
 }

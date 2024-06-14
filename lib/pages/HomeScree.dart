@@ -26,9 +26,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   final List services =[
+    {"name": "Waste Collecting", "image" : "lib/icons/truck.png"},
     {"name": "Recycling", "image" : "lib/icons/recycle-bin.png"},
     {"name": "Incinerating", "image" : "lib/icons/tank.png"},
-    {"name": "Waste Collecting", "image" : "lib/icons/truck.png"},
   ];
 
   bool showAdminItems = false;
@@ -264,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 1),
               decoration: BoxDecoration(
                 color: Colors.cyan[700],
                 borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20)),
@@ -292,7 +292,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   'Hi ${snapshot.data}',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 22,
+                                    fontSize: 18,
                                     color: Colors.white,
                                   ),
                                 );
@@ -302,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             "Welcome to our App",
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               color: Colors.grey[300],
                             ),
                           ),
@@ -313,23 +313,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationScreen()));
                         },
                         child: Container(
-                          width: 45,
-                          height: 45,
+                          width: 38,
+                          height: 38,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: Colors.cyan[900],
                           ),
-                          child: Icon(Icons.notifications, size: 36, color: Colors.white),
+                          child: Icon(Icons.notifications, size: 32, color: Colors.white),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 8),
                   Column(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7),
-                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: Colors.white,
@@ -343,32 +343,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Waste Collectors",
+                                      "Waste Services",
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.grey[800],
                                       ),
                                     ),
-                                    const SizedBox(height: 7),
+                                    const SizedBox(height: 4),
                                     Text(
-                                      "Request for waste collection",
+                                      "Request for waste services",
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         color: Colors.grey[700],
                                       ),
                                     ),
                                   ],
                                 ),
                                 Container(
-                                  height: 75,
-                                  width: 75,
+                                  height: 55,
+                                  width: 55,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50),
                                   ),
                                   child: Icon(
                                     Icons.recycling,
-                                    size: 60,
+                                    size: 50,
                                     color: Colors.cyan[700],
                                   ),
                                 ),
@@ -382,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 7),
               decoration: const BoxDecoration(
@@ -394,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     "Services",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[700],
                     ),
@@ -402,9 +402,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 13),
-            Container(
-              height: 245,
+            const SizedBox(height: 6),
+            Expanded(
+              // height: 200,
               child: ListView.builder(
                 itemCount: (services.length / 2).ceil(),
                 itemBuilder: (context, index) {
@@ -431,9 +431,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 11),
+            const SizedBox(height: 7),
             Container(
-              height: 120,
+              height: 110,
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: PageView(
                 controller: _pageController,

@@ -82,8 +82,8 @@ class AboutUsPage extends StatelessWidget {
             ),
             SizedBox(height: 10.0),
             // Team Members List
-            buildTeamMember('John Doe', 'Co-founder & CEO'),
-            buildTeamMember('Jane Smith', 'Co-founder & CTO'),
+            buildTeamMember('Udom Students', 'Co-founder & CEO'),
+            // buildTeamMember('Jane Smith', 'Co-founder & CTO'),
             // Add more team members as needed
           ],
         ),

@@ -21,7 +21,7 @@ class PromoContent extends StatelessWidget {
         children: [
 
           Container(
-            // height: 150,
+            height: 200,
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
@@ -39,7 +39,7 @@ class PromoContent extends StatelessWidget {
               title,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.cyan[700]
               ),
@@ -54,7 +54,7 @@ class PromoContent extends StatelessWidget {
               desc,
 
               style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   color: Colors.grey[700]
               ),
             ),

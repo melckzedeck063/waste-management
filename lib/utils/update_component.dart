@@ -77,8 +77,8 @@ class _UpdateCardState extends State<UpdateCard> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
-                          if (await canLaunch(_link)) {
-                            await launch(_link);
+                          if (await canLaunch(widget.pageUrl)) {
+                            await launch(widget.pageUrl);
                           }
                         },
                     ),

@@ -157,21 +157,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        // Handle edit profile action
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        textStyle: const TextStyle(fontSize: 18),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      icon: const Icon(Icons.edit),
-                      label: const Text('Edit Profile'),
-                    ),
-                    const SizedBox(height: 10),
+                    // ElevatedButton.icon(
+                    //   onPressed: () {
+                    //     // Handle edit profile action
+                    //   },
+                    //   style: ElevatedButton.styleFrom(
+                    //     padding: const EdgeInsets.symmetric(vertical: 16),
+                    //     textStyle: const TextStyle(fontSize: 18),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(8),
+                    //     ),
+                    //   ),
+                    //   icon: const Icon(Icons.edit),
+                    //   label: const Text('Edit Profile'),
+                    // ),
+                    // const SizedBox(height: 10),
                     ElevatedButton.icon(
                       onPressed: () {
                         Navigator.push(

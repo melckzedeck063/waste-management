@@ -10,6 +10,8 @@ import 'package:manage_waste/models/feedbacks_model.dart';
 import 'package:manage_waste/models/notifications_model.dart';
 import 'package:manage_waste/pages/my_requests.dart';
 import 'package:manage_waste/provider/user_details_provider.dart';
+import 'package:manage_waste/pages/feedbacks_page.dart';
+
 
 import '../config/URLS.dart';
 
@@ -65,12 +67,12 @@ class FeedbackProvider extends ChangeNotifier{
           _isError = false;
           _resMessage = respo['message'];
 
-          // Future.delayed(const Duration(seconds: 5),(){
-          //   Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => const MyRequests())
-          //   );
-          // });
+          Future.delayed(const Duration(seconds: 5),(){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>  FeedbackPage())
+            );
+          });
         } else {
           _requestSuccessful = false;
           _resMessage = respo['message'];

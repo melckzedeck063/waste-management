@@ -147,7 +147,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           _name = _nameController.text.trim();
                           _feedback = _feedbackController.text.trim();
 
-                          Future.delayed(Duration(seconds: 3), (){
+                          Future.delayed(Duration(seconds: 5), (){
                             feedback.createFeedback(message: _feedback, ratings: _rating, context: context);
 
                             if(feedback.requestSuccessful == true){

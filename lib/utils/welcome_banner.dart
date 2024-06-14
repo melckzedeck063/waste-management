@@ -19,7 +19,7 @@ class WelcomeBanner extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             title,
             style: const TextStyle(
@@ -35,7 +35,6 @@ class WelcomeBanner extends StatelessWidget {
             style: const TextStyle(
               color: Colors.white70,
               fontSize: 12,
-              fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,
           ),

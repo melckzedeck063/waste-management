@@ -66,7 +66,7 @@ class _ServiceRequestState extends State<ServiceDelivery> {
       Placemark place = placemarks[0];
 
       setState(() {
-        currentAddress = "${place.locality},${place.postalCode}, ${place.country}";
+        currentAddress = "${place.locality} - ${place.country}";
       });
 
     }catch (e){
