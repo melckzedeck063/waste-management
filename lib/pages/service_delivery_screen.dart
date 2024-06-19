@@ -41,6 +41,9 @@ class _ServiceRequestState extends State<ServiceDelivery> {
     speedAccuracy: 0.0,
   );
 
+  bool _isLoading = false; // Added to track the loading state
+  bool _isLoading1 = false;
+
   @override
   void initState() {
     checkUserRole();
@@ -595,7 +598,9 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: ElevatedButton(
                           onPressed: () {
-
+                            setState(() {
+                              _isLoading = true;
+                            });
                             String status="CANCELLED";
                             String message = "Booking cancelled successful";
                             String uuid  = widget.arguments.uuid;
@@ -603,6 +608,9 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                             book.updateBookingStatus(bookingUuid: uuid, status: status, message: message, context: context);
 
                             Future.delayed(Duration(seconds: 5), (){
+                              setState(() {
+                                _isLoading = false;
+                              });
                               if(book.requestSuccessful == true) {
                                 toastification.show(
                                     context: context,
@@ -639,14 +647,19 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                             padding: const EdgeInsets.all(8),
                             animationDuration: const Duration(seconds: 2),
                           ),
-                          child: const Center(
-                              child: Text("Cancel Order",
-                                style: TextStyle(
+                          child:  Center(
+                            child: _isLoading
+                                ? CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                                : Text(
+                              "Cancel",
+                              style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              )),
+                                  color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
 
@@ -656,6 +669,9 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: ElevatedButton(
                           onPressed: () {
+                            setState(() {
+                              _isLoading1 = true;
+                            });
                             String status="CONFIRMED";
                             String message = "Booking confirmed successful";
                             String uuid  = widget.arguments.uuid;
@@ -663,6 +679,9 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                             book.updateBookingStatus(bookingUuid: uuid, status: status, message: message, context: context);
 
                             Future.delayed(Duration(seconds: 5), (){
+          setState(() {
+          _isLoading1 = false;
+          });
                               if(book.requestSuccessful == true) {
                                 toastification.show(
                                     context: context,
@@ -697,16 +716,21 @@ class _ServiceRequestState extends State<ServiceDelivery> {
                               padding: const EdgeInsets.all(8),
                               animationDuration: const Duration(seconds: 3)
                           ),
-                          child: const Center(
-                              child: Text("Confirm Order",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                ),
-                              )),
+                          child: Center(
+                            child: _isLoading1
+                                ? CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                                : Text(
+                              "Confirm",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+          ),
                         ),
-                      ),
                     ],
                   )
 

@@ -13,9 +13,10 @@ class UpdatesScreen extends StatefulWidget {
 class _UpdatesScreenState extends State<UpdatesScreen> {
 
   final List<Map<String,String>> news = [
-    {"title": "Importance of environmental awareness", "description": "Environmental awareness refers to the understanding and knowledge of the nature environment and impact of human activities on it","link"  : "https://education.nationalgeographic.org/resource/conserving-earth/"},
-    {"title": "Tools fro waste collection", "description": "Several ways and tools used for waste collection  ensure environment is kept safe in markets and different places", "link" : "https://images.app.goo.gl/ZY9FEYVdnPQnSijm9"},
-    {"title": "Ways To Reduce Waste", "description": "Ways used to reduce waste at home and business areas in order to keep our environment safe and reduce environmental polution","link" : "https://images.app.goo.gl/ZY9FEYVdnPQnSijm9"}
+    {"title": "Proper waste management", "description": "Proper waste management is crucial for environmental sustainability as it reduces pollution, conserves resources, prevents health hazards.","link"  : "https://blog.cleanhub.com/what-is-waste-management#what-is-it"},
+    {"title": "Ways To Reduce Waste", "description": "Ways used to reduce waste at home and business areas in order to keep our environment safe and reduce environmental polution","link" : "https://images.app.goo.gl/ZY9FEYVdnPQnSijm9"},
+    {"title": "Environmental awareness", "description": "Environmental awareness refers to the understanding and knowledge of the natural environment and the impact of human activities on it","link" : "https://www.earthreminder.com/why-is-environmental-awareness-important/"},
+    {"title": "Improper solid waste disposal", "description": "Improper solid waste disposal can have negative consequences on human health. It leads to water, soil, and air contamination, posing risks to nearby communities","link" : "https://organicabiotech.com/negative-effects-of-improper-solid-waste-disposal-on-human-health/"}
   ];
 
   @override

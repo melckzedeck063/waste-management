@@ -15,7 +15,7 @@ class AuthenticationProvider extends ChangeNotifier {
   final RequestUrl = AppUrls.AuthUrl;
 
 
-  bool _isLoading = false;
+  bool _isLoading = true;
   bool _requestSuccessful = false;
   String _resMessage = "";
   bool _isError = true;
@@ -26,7 +26,7 @@ class AuthenticationProvider extends ChangeNotifier {
   bool get requestSuccessful =>  _requestSuccessful;
   bool get isError => _isError;
 
-  void registerUser ({
+   registerUser ({
     required String firstName,
     required String lastName,
     required String username,
@@ -112,7 +112,7 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
 
-  void loginUser({
+   loginUser({
     required String username,
     required String password,
     required BuildContext context,
@@ -157,7 +157,7 @@ class AuthenticationProvider extends ChangeNotifier {
           CurrentUserProvider().saveFirstname(firstname + " " + lastname);
           CurrentUserProvider().saveUserRole(userRole);
           CurrentUserProvider().savePhone(phone);
-          
+
           Future.delayed( Duration(seconds: 6), (){
             Navigator.push(
                 context,

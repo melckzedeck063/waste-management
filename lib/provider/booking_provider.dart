@@ -230,7 +230,7 @@ class BookingProvider extends ChangeNotifier{
   }
 
 
-  void initiatePaymment({
+   initiatePaymment({
     required String accountNumber,
     required String amount,
     required String provider,
@@ -263,8 +263,10 @@ class BookingProvider extends ChangeNotifier{
 
       final Map<String, dynamic> respo = json.decode(response.body);
 
+      print(respo);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final Map<String, dynamic> respo = json.decode(response.body);
+        // final Map<String, dynamic> respo = json.decode(response.body);
+        // print(respo);
 
         if (respo["success"] == true) {
           _requestSuccessful = true;
@@ -303,7 +305,7 @@ class BookingProvider extends ChangeNotifier{
       print(_resMessage);
     } on FormatException catch (e) {
       _isLoading = false;
-      _resMessage = "Response format error $e";
+      _resMessage = "Request failed! Please try again later";
       print(_resMessage);
     } catch (e) {
       _isLoading = false;
@@ -315,7 +317,7 @@ class BookingProvider extends ChangeNotifier{
   }
 
 
-  void updateBookingStatus({
+   updateBookingStatus({
     required String bookingUuid,
     required String status,
     required String message,

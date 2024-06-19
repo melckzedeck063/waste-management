@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:manage_waste/pages/payment_page2.dart';
 import 'package:manage_waste/provider/booking_provider.dart';
 import 'package:provider/provider.dart';
-import '../provider/user_details_provider.dart';
 import 'package:toastification/toastification.dart';
 
 class ServiceRequest extends StatefulWidget {
@@ -38,6 +36,8 @@ class _ServiceRequestState extends State<ServiceRequest> {
     speed: 0.0,
     speedAccuracy: 0.0,
   );
+
+  bool _isLoading = false; // Add loading state
 
   @override
   initState() {
@@ -75,7 +75,9 @@ class _ServiceRequestState extends State<ServiceRequest> {
 
   bool isValidRequestDay(DateTime date) {
     int dayOfWeek = date.weekday;
-    return dayOfWeek == DateTime.monday || dayOfWeek == DateTime.wednesday || dayOfWeek == DateTime.saturday;
+    return dayOfWeek == DateTime.monday ||
+        dayOfWeek == DateTime.wednesday ||
+        dayOfWeek == DateTime.saturday;
   }
 
   void _navigateToPaymentScreen(BuildContext context) {
@@ -96,6 +98,9 @@ class _ServiceRequestState extends State<ServiceRequest> {
     if (!isValidRequestDay(selectedDate)) {
       _navigateToPaymentScreen(context);
     } else {
+      setState(() {
+        _isLoading = true;
+      });
       submitRequest(context, book);
     }
   }
@@ -120,6 +125,10 @@ class _ServiceRequestState extends State<ServiceRequest> {
         context: context);
 
     Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        _isLoading = false;
+      });
+
       if (book.requestSuccessful == true) {
         toastification.show(
             context: context,
@@ -163,7 +172,8 @@ class _ServiceRequestState extends State<ServiceRequest> {
         ),
         title: const Text(
           "Request Service",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
       body: Container(
@@ -184,7 +194,8 @@ class _ServiceRequestState extends State<ServiceRequest> {
                         padding: const EdgeInsets.only(top: 1, left: 1),
                         decoration: BoxDecoration(color: Colors.cyan[600]),
                         child: ClipRRect(
-                          borderRadius: const BorderRadius.only(topLeft: Radius.circular(20)),
+                          borderRadius:
+                          const BorderRadius.only(topLeft: Radius.circular(20)),
                           child: Image.asset(
                             widget.arguments.servicePhoto,
                             height: 150,
@@ -202,7 +213,9 @@ class _ServiceRequestState extends State<ServiceRequest> {
                         child: Text(
                           "Service Details",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 19, color: Colors.cyan[800]),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 19,
+                              color: Colors.cyan[800]),
                         ),
                       ),
                       Container(
@@ -212,12 +225,15 @@ class _ServiceRequestState extends State<ServiceRequest> {
                           children: [
                             Text(
                               "Name: ",
-                              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey[700]),
                             ),
                             Text(
                               widget.arguments.serviceName,
                               style: TextStyle(
-                                  fontSize: 14, color: Colors.grey[700], fontWeight: FontWeight.bold),
+                                  fontSize: 14,
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
@@ -229,13 +245,16 @@ class _ServiceRequestState extends State<ServiceRequest> {
                           children: [
                             Text(
                               "From: ",
-                              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey[700]),
                             ),
                             Text(
                               "09:00 AM",
                               maxLines: 2,
                               style: TextStyle(
-                                  fontSize: 14, color: Colors.grey[700], fontWeight: FontWeight.bold),
+                                  fontSize: 14,
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
@@ -247,13 +266,16 @@ class _ServiceRequestState extends State<ServiceRequest> {
                           children: [
                             Text(
                               "To: ",
-                              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey[700]),
                             ),
                             Text(
-                              "05:00 AM",
+                              "05:00 PM",
                               maxLines: 2,
                               style: TextStyle(
-                                  fontSize: 14, color: Colors.grey[700], fontWeight: FontWeight.bold),
+                                  fontSize: 14,
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
@@ -265,13 +287,16 @@ class _ServiceRequestState extends State<ServiceRequest> {
                           children: [
                             Text(
                               "Cost: ",
-                              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey[700]),
                             ),
                             Text(
                               "@ 5000",
                               maxLines: 2,
                               style: TextStyle(
-                                  fontSize: 14, color: Colors.grey[700], fontWeight: FontWeight.bold),
+                                  fontSize: 14,
+                                  color: Colors.grey[700],
+                                  fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
@@ -323,7 +348,8 @@ class _ServiceRequestState extends State<ServiceRequest> {
                       }
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 15),
                       decoration: BoxDecoration(
                         color: Colors.cyan[100],
                         borderRadius: BorderRadius.circular(8),
@@ -357,8 +383,12 @@ class _ServiceRequestState extends State<ServiceRequest> {
                         selectedWasteCategory = newValue!;
                       });
                     },
-                    items: <String>['Solid Waste', 'Liquid Waste', 'Medical Waste', 'Hazardous Waste']
-                        .map<DropdownMenuItem<String>>((String value) {
+                    items: <String>[
+                      'Solid Waste',
+                      'Liquid Waste',
+                      'Medical Waste',
+                      'Hazardous Waste'
+                    ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -367,17 +397,27 @@ class _ServiceRequestState extends State<ServiceRequest> {
                   ),
                   const SizedBox(height: 20),
                   GestureDetector(
-                    onTap: () {
+                    onTap: _isLoading // Disable button tap if loading
+                        ? null
+                        : () {
                       handleRequestNow(context, book);
                     },
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       decoration: BoxDecoration(
-                        color: Colors.cyan,
+                        color: _isLoading
+                            ? Colors.grey // Change color if loading
+                            : Colors.cyan,
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Text(
+                      child: _isLoading
+                          ? const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                          : const Text(
                         "Request Now",
                         style: TextStyle(
                           color: Colors.white,
@@ -398,18 +438,12 @@ class _ServiceRequestState extends State<ServiceRequest> {
   }
 }
 
-
-
 class ServiceArguments {
-  final  String serviceName;
+  final String serviceName;
   final String servicePhoto;
 
-
-  ServiceArguments(
-      {
-        required this.serviceName,
-        required this.servicePhoto
-      }
-      );
-
+  ServiceArguments({
+    required this.serviceName,
+    required this.servicePhoto,
+  });
 }

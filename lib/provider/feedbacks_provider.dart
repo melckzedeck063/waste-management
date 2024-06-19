@@ -60,14 +60,14 @@ class FeedbackProvider extends ChangeNotifier{
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> respo = json.decode(response.body);
 
-        print(respo);
+        // print(respo);
         if (respo["error"] == false) {
           _requestSuccessful = true;
           _isLoading = false;
           _isError = false;
           _resMessage = respo['message'];
 
-          Future.delayed(const Duration(seconds: 5),(){
+          Future.delayed(const Duration(seconds: 6),(){
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) =>  FeedbackPage())
@@ -83,6 +83,7 @@ class FeedbackProvider extends ChangeNotifier{
         final String res = response.body;
         print("response : $res");
         _isLoading = false;
+        _resMessage = "Request failed";
         _requestSuccessful = false;
         notifyListeners();
       }
@@ -171,7 +172,7 @@ class FeedbackProvider extends ChangeNotifier{
 
     final token =  await CurrentUserProvider().getToken();
 
-    String url =  "$RequestUrl/feedbacks/by-ratings";
+    String url =  "$RequestUrl/feedbacks/all";
 
     final Map<String,String> headers = {
       "Content-Type":  "application/json",
@@ -185,7 +186,7 @@ class FeedbackProvider extends ChangeNotifier{
       if(request.statusCode == 200){
         final decodedData =  json.decode(request.body);
 
-        // print(decodedData);
+        print(decodedData);
 
         if(decodedData != null){
           final feedbackModel =  FeedbacksModel.fromJson(decodedData);

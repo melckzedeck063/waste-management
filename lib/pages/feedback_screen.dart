@@ -22,6 +22,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   String _feedback = '';
   double _rating = 0.0;
   bool _isSubmitting = false;
+  bool _isLoading = false; // Added to track the loading state
 
   @override
   void dispose() {
@@ -142,12 +143,20 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     width: 320,
                     child: ElevatedButton(
                       onPressed: (){
+
+                        setState(() {
+                          _isSubmitting = true;
+                        });
+
                         if (_formKey.currentState!.validate()) {
                           _email = _emailController.text.trim();
                           _name = _nameController.text.trim();
                           _feedback = _feedbackController.text.trim();
 
-                          Future.delayed(Duration(seconds: 5), (){
+                          Future.delayed(Duration(seconds: 8), (){
+                            setState(() {
+                              _isSubmitting = false;
+                            });
                             feedback.createFeedback(message: _feedback, ratings: _rating, context: context);
 
                             if(feedback.requestSuccessful == true){
@@ -162,19 +171,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                   primaryColor: Colors.green[700],
                                   backgroundColor: Colors.white
                               );
-                            }else {
-                              toastification.show(
-                                  context: context,
-                                  style: ToastificationStyle.fillColored,
-                                  type: ToastificationType.error,
-                                  description: RichText(text:   TextSpan(text: feedback.resMessage)),
-                                  alignment: Alignment.bottomCenter,
-                                  autoCloseDuration: const Duration(seconds: 4),
-                                  icon: const Icon(Icons.cancel, color: Colors.white,),
-                                  primaryColor: Colors.red[500],
-                                  backgroundColor: Colors.white
-                              );
-
                             }
 
                           });

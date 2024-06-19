@@ -32,6 +32,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   late LatLng _center;
   late CameraPosition _myPosition;
   bool isLoading  = true;
+  bool _isLoading = false; // Added to track the loading state
 
   static const LatLng sourceLocation = LatLng(-6.1871492323538915, 35.755923355882224);
   // static const LatLng destination = LatLng(-6.188551067565355, 35.777384833128245);
@@ -385,6 +386,9 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                       book.updateBookingStatus(bookingUuid: bookingUuid, status: status, context: context, message: message);
 
                       Future.delayed(Duration(seconds: 5), (){
+                        setState(() {
+                          _isLoading = false;
+                        });
                         if(book.requestSuccessful == true) {
                           toastification.show(
                               context: context,
@@ -419,14 +423,19 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                         backgroundColor: Colors.cyan[700],
                         padding: const EdgeInsets.all(8)
                     ),
-                    child: const Center(
-                        child: Text("Complete Now",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
-                          ),
-                        )),
+                    child:  Center(
+                      child: _isLoading
+                          ? CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                          : Text(
+                        "Complete Now",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
 
